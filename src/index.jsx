@@ -1,2 +1,2 @@
-export handler from './handler';
-export Field from './Field';
+export handler from './HOC/handler';
+export Field from './components/Field';
