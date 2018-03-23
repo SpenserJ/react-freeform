@@ -42,7 +42,6 @@ export default class Field extends React.Component {
 
   render() {
     const FieldType = this.props.component;
-    console.log(this.context.injector().getValue());
     const fieldProps = {
       onChange: this.onChange,
       value: this.getValue(),

@@ -49,7 +49,6 @@ export default (WrappedComponent) => {
     }
 
     onChange = (e) => {
-      console.log(e.target.name, e.target.value);
       this.setState({
         values: immutableObject.set(this.state.values, e.target.name, e.target.value),
       })

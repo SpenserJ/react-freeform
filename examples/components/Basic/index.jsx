@@ -8,6 +8,10 @@ class TestForm extends React.Component {
       string: 'Hello',
       value2: 'World',
       checkbox: true,
+      nested: {
+        child1: "I'm a child",
+        child2: 'So am I',
+      },
     };
   }
 }
@@ -21,6 +25,10 @@ export default () => (
       <Neoform.Field name="string" />
       <Neoform.Field name="value2" />
       <Neoform.Field name="checkbox" type="checkbox" />
+      <Neoform.NestedValues name="nested">
+        <Neoform.Field name="child1" />
+        <Neoform.Field name="child2" />
+      </Neoform.NestedValues>
     </WrappedClass>
   </div>
 );
