@@ -12,11 +12,18 @@ class TestForm extends React.Component {
         child1: "I'm a child",
         child2: 'So am I',
       },
+      contextBlocked: 'Make me render',
     };
   }
 }
 
 const WrappedClass = Neoform.handler(TestForm);
+
+class ContextBlocker extends React.PureComponent {
+  render() {
+    return <React.Fragment>{this.props.children}</React.Fragment>
+  }
+}
 
 export default () => (
   <div>
@@ -29,6 +36,10 @@ export default () => (
         <Neoform.Field name="child1" />
         <Neoform.Field name="child2" />
       </Neoform.NestedValues>
+      <ContextBlocker>
+        <h1>Context Blocked</h1>
+        <Neoform.Field name="contextBlocked" />
+      </ContextBlocker>
     </WrappedClass>
   </div>
 );

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 
 import Input from './Input';
 import { fakeChangeEvent } from '../utilities';
+import Subscription from '../subscription';
 
-export default class Field extends React.Component {
+export default class Field extends React.PureComponent {
   static propTypes = {
     name: PropTypes.string,
     component: PropTypes.oneOfType([
@@ -20,19 +21,28 @@ export default class Field extends React.Component {
 
   static contextTypes = {
     injector: PropTypes.func.isRequired,
+    formSubscription: PropTypes.objectOf(PropTypes.func).isRequired,
   };
+
+  constructor(props, context) {
+    super(props, context);
+    this.state = { renderTrigger: true };
+    this.subscription = new Subscription(
+      this,
+      props.name,
+      () => this.setState({ renderTrigger: !this.state.renderTrigger }),
+    );
+  }
+
+  componentDidMount() {
+    this.subscription.trySubscribe(this.props.name);
+  }
 
   onChange = (e) => {
     this.context.injector().onChange(fakeChangeEvent(
       this.props.name ? [].concat(this.props.name) : [],
       e.target.value,
     ));
-  }
-
-  getValue = () => {
-    const value = this.context.injector().getValue();
-    if (!value) { return value; }
-    return this.props.name ? value[this.props.name] : value;
   }
 
   getOtherProps() {
@@ -44,8 +54,9 @@ export default class Field extends React.Component {
     const FieldType = this.props.component;
     const fieldProps = {
       onChange: this.onChange,
-      value: this.getValue(),
+      value: this.subscription.getValue(),
     };
+    console.log('rendering', this.props.name)
     return (
       <FieldType
         {...fieldProps}

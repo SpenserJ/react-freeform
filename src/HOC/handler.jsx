@@ -10,6 +10,7 @@ export default (WrappedComponent) => {
   return class Test extends WrappedComponent {
     static childContextTypes = {
       injector: PropTypes.func.isRequired,
+      formSubscription: PropTypes.objectOf(PropTypes.func).isRequired,
     };
 
     constructor(props, context) {
@@ -23,6 +24,8 @@ export default (WrappedComponent) => {
         getValue: this.getValue,
         onChange: this.onChange,
       };
+
+      this.subscriptions = [];
     }
 
     getChildContext() {
@@ -32,6 +35,14 @@ export default (WrappedComponent) => {
       return {
         ...superChildContext,
         injector: this.injector,
+        formSubscription: {
+          subscribe: (callback, path) => {
+            this.subscriptions.push(callback);
+          },
+          unsubscribe: (callback, path) => {
+            this.subscriptions = this.subscriptions.filter(v => v !== callback);
+          },
+        },
       }
     }
 
@@ -51,6 +62,8 @@ export default (WrappedComponent) => {
     onChange = (e) => {
       this.setState({
         values: immutableObject.set(this.state.values, e.target.name, e.target.value),
+      }, () => {
+        this.subscriptions.forEach(callback => callback());
       })
     }
 
