@@ -3,6 +3,10 @@ import path from 'path';
 import { JSDOM } from 'jsdom';
 import hook from 'css-modules-require-hook';
 import sass from 'node-sass';
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
 
 const { window } = new JSDOM('<!doctype html><html><body></body></html>');
 

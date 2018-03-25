@@ -2,12 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import immutableObject from 'object-path-immutable';
 
+import { getDisplayName } from '../utilities';
+
 export default (WrappedComponent) => {
   if (!WrappedComponent.prototype.isReactComponent) {
     throw 'Cannot extend a pure component';
   }
 
-  return class Test extends WrappedComponent {
+  return class extends WrappedComponent {
+    static displayName = `handler(${getDisplayName(WrappedComponent)})`;
+
     static childContextTypes = {
       injector: PropTypes.func.isRequired,
       formSubscription: PropTypes.objectOf(PropTypes.func).isRequired,

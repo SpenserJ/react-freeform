@@ -1,0 +1,10 @@
+{
+  "extends": "../.babelrc",
+  "plugins": [
+    ["module-resolver", {
+      "alias": {
+        "react-neoform": "./src/"
+      }
+    }]
+  ]
+}
