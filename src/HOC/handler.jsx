@@ -71,10 +71,14 @@ export default (WrappedComponent) => {
       })
     }
 
+    formProps() {
+      return {};
+    }
+
     render() {
       const content = super.render ? super.render() : this.props.children;
       return (
-        <form>
+        <form {...this.formProps()}>
           {content}
         </form>
       );

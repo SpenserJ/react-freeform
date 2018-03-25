@@ -15,9 +15,14 @@ class TestForm extends React.Component {
       contextBlocked: 'Make me render',
     };
   }
+
+  onSubmit(values) {
+    console.log('Submitting', values);
+  }
 }
 
-const WrappedClass = Neoform.handler(TestForm);
+const Handler = Neoform.handler(TestForm);
+const WrappedClass = Neoform.submit(Handler);
 
 class ContextBlocker extends React.PureComponent {
   render() {
@@ -40,6 +45,7 @@ export default () => (
         <h1>Context Blocked</h1>
         <Neoform.Field name="contextBlocked" />
       </ContextBlocker>
+      <input type="submit" />
     </WrappedClass>
   </div>
 );
