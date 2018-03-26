@@ -12,6 +12,23 @@ export default (WrappedComponent) => {
   return class extends WrappedComponent {
     static displayName = `submit(${getDisplayName(WrappedComponent)})`;
 
+    static childContextTypes = {
+      ...(WrappedComponent.childContextTypes || {}),
+      nfIsLoading: PropTypes.func.isRequired,
+      nfCanSubmit: PropTypes.func.isRequired,
+    }
+
+    getChildContext() {
+      const superChildContext = (typeof super.getChildContext === 'function')
+        ? super.getChildContext()
+        : {};
+      return {
+        ...superChildContext,
+        nfIsLoading: () => this.isLoading(),
+        nfCanSubmit: () => this.canSubmit(),
+      };
+    }
+
     onSubmitBound = (e) => {
       e.preventDefault();
       this.onSubmit();
@@ -28,7 +45,7 @@ export default (WrappedComponent) => {
 
     canSubmit() {
       if (super.canSubmit) { return super.canSubmit(); }
-      return this.isLoading() && this.isValid();
+      return !this.isLoading();
     }
 
     formProps() {

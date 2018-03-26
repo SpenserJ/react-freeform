@@ -45,6 +45,7 @@ export default () => (
         <h1>Context Blocked</h1>
         <Neoform.Field name="contextBlocked" />
       </ContextBlocker>
+      <Neoform.CanSubmit>{(val) => JSON.stringify(val)}</Neoform.CanSubmit>
       <input type="submit" />
     </WrappedClass>
   </div>
