@@ -27,3 +27,10 @@ export const fakeChangeEvent = (name, value) => ({
   preventDefault: noop,
   target: { name, value },
 });
+
+export const shallowCompare = (nextObj, currObj, exclude = []) => {
+  const keysNext = Object.keys(nextObj).filter(v => !exclude.includes(v));
+  const keysCurr = Object.keys(currObj).filter(v => !exclude.includes(v));
+  return (keysNext.length !== keysCurr.length) ||
+    keysNext.some(next => (nextObj[next] !== currObj[next]));
+};

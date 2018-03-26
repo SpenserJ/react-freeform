@@ -40,10 +40,8 @@ export default (WrappedComponent) => {
         ...superChildContext,
         injector: this.injector,
         formSubscription: {
-          subscribe: (callback, path) => {
-            this.subscriptions.push(callback);
-          },
-          unsubscribe: (callback, path) => {
+          subscribe: callback => this.subscriptions.push(callback),
+          unsubscribe: (callback) => {
             this.subscriptions = this.subscriptions.filter(v => v !== callback);
           },
         },

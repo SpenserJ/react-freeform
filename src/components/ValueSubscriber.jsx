@@ -1,48 +1,32 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 import { fakeChangeEvent } from '../utilities';
-import Subscription from '../subscription';
+import Subscriber from './Subscriber';
 
-export default class ValueSubscriber extends React.PureComponent {
+export default class ValueSubscriber extends Subscriber {
   static propTypes = {
+    ...Subscriber.propTypes,
     name: PropTypes.string,
-    children: PropTypes.node,
   };
 
   static defaultProps = {
+    ...Subscriber.defaultProps,
     name: '',
-    children: null,
   };
 
   static contextTypes = {
+    ...Subscriber.contextTypes,
     injector: PropTypes.func.isRequired,
-    formSubscription: PropTypes.objectOf(PropTypes.func).isRequired,
   };
 
   constructor(props, context) {
     super(props, context);
-    this.state = { renderTrigger: true };
-    this.subscription = new Subscription(
-      this,
-      props.name,
-      () => this.setState({ renderTrigger: !this.state.renderTrigger }),
-    );
+    this.oldValue = undefined;
   }
 
   componentDidMount() {
-    this.subscription.trySubscribe(this.props.name);
-  }
-
-  componentWillUnmount() {
-    this.subscription.tryUnsubscribe();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.name !== nextProps.name) {
-      // TODO: Is this even required, since we're not keying by name?
-      this.subscription.trySubscribe();
-    }
+    super.componentDidMount();
+    this.oldValue = this.getValue();
   }
 
   onChange = (e) => {
@@ -52,9 +36,21 @@ export default class ValueSubscriber extends React.PureComponent {
     ));
   }
 
-  getValue = () => this.subscription.getValue();
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    if (super.shouldComponentUpdate(nextProps, nextState, nextContext)) { return true; }
 
-  render() {
-    return <React.Fragment>{this.props.children}</React.Fragment>;
+    const newValue = this.getValue();
+    if (newValue !== this.oldValue) {
+      this.oldValue = newValue;
+      return true;
+    }
+
+    return false;
+  }
+
+  getValue = () => {
+    const value = this.context.injector().getValue();
+    if (!value) { return value; }
+    return this.props.name ? value[this.props.name] : value;
   }
 }
