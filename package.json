@@ -22,9 +22,9 @@
   "author": "Spenser Jones <hello@spenserj.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SpenserJ/freeform/issues"
+    "url": "https://github.com/SpenserJ/react-freeform/issues"
   },
-  "homepage": "https://github.com/SpenserJ/freeform#readme",
+  "homepage": "https://github.com/SpenserJ/react-freeform#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
