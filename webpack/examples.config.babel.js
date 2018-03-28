@@ -16,7 +16,7 @@ const common = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      'react-neoform': path.join(__dirname, '../src'),
+      'react-freeform': path.join(__dirname, '../src'),
     },
   },
 

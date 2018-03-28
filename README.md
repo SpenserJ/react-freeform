@@ -1,20 +1,20 @@
-# react-neoform
+# react-freeform
 
-[![Build Status](https://travis-ci.org/SpenserJ/react-neoform.svg?branch=master)](https://travis-ci.org/SpenserJ/react-neoform)
-[![codecov](https://codecov.io/gh/SpenserJ/react-neoform/branch/master/graph/badge.svg)](https://codecov.io/gh/SpenserJ/react-neoform)
-[![npm](https://img.shields.io/npm/v/react-neoform.svg)](https://www.npmjs.com/package/react-neoform)
+[![Build Status](https://travis-ci.org/SpenserJ/react-freeform.svg?branch=master)](https://travis-ci.org/SpenserJ/react-freeform)
+[![codecov](https://codecov.io/gh/SpenserJ/react-freeform/branch/master/graph/badge.svg)](https://codecov.io/gh/SpenserJ/react-freeform)
+[![npm](https://img.shields.io/npm/v/react-freeform.svg)](https://www.npmjs.com/package/react-freeform)
 
 ## Installation
 
-React NeoForm requires *React 15.0 or later.*
+React Freeform requires *React 15.0 or later.*
 
 ```
-npm install --save react-neoform
+npm install --save react-freeform
 ```
 
 ## Usage
 
-Until documentation has been written, take a look at the [examples](https://github.com/SpenserJ/react-neoform/tree/master/examples/components) and [tests](https://github.com/SpenserJ/react-neoform/tree/master/test).
+Until documentation has been written, take a look at the [examples](https://github.com/SpenserJ/react-freeform/tree/master/examples/components) and [tests](https://github.com/SpenserJ/react-freeform/tree/master/test).
 
 ## License
 

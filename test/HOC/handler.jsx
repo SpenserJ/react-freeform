@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
 
-import handler from 'react-neoform/HOC/handler';
+import handler from 'react-freeform/HOC/handler';
 
 class Test extends React.Component {}
 

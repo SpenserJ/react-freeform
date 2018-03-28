@@ -1,5 +1,5 @@
 {
-  "name": "react-neoform",
+  "name": "react-freeform",
   "version": "0.0.1",
   "description": "",
   "main": "lib/index.js",
@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SpenserJ/react-neoform.git"
+    "url": "git+https://github.com/SpenserJ/react-freeform.git"
   },
   "author": "Spenser Jones <hello@spenserj.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SpenserJ/neoform/issues"
+    "url": "https://github.com/SpenserJ/freeform/issues"
   },
-  "homepage": "https://github.com/SpenserJ/neoform#readme",
+  "homepage": "https://github.com/SpenserJ/freeform#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

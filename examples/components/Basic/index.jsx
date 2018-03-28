@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as Neoform from 'react-neoform';
+import * as Freeform from 'react-freeform';
 
 class TestForm extends React.Component {
   getDefaults() {
@@ -21,8 +21,8 @@ class TestForm extends React.Component {
   }
 }
 
-const Handler = Neoform.handler(TestForm);
-const WrappedClass = Neoform.submit(Handler);
+const Handler = Freeform.handler(TestForm);
+const WrappedClass = Freeform.submit(Handler);
 
 class ContextBlocker extends React.PureComponent {
   render() {
@@ -34,18 +34,18 @@ export default () => (
   <div>
     <WrappedClass>
       <h1>Hello Class</h1>
-      <Neoform.Field name="string" />
-      <Neoform.Field name="value2" />
-      <Neoform.Field name="checkbox" type="checkbox" />
-      <Neoform.NestedValues name="nested">
-        <Neoform.Field name="child1" />
-        <Neoform.Field name="child2" />
-      </Neoform.NestedValues>
+      <Freeform.Field name="string" />
+      <Freeform.Field name="value2" />
+      <Freeform.Field name="checkbox" type="checkbox" />
+      <Freeform.NestedValues name="nested">
+        <Freeform.Field name="child1" />
+        <Freeform.Field name="child2" />
+      </Freeform.NestedValues>
       <ContextBlocker>
         <h1>Context Blocked</h1>
-        <Neoform.Field name="contextBlocked" />
+        <Freeform.Field name="contextBlocked" />
       </ContextBlocker>
-      <Neoform.CanSubmit>{(val) => JSON.stringify(val)}</Neoform.CanSubmit>
+      <Freeform.CanSubmit>{(val) => JSON.stringify(val)}</Freeform.CanSubmit>
       <input type="submit" />
     </WrappedClass>
   </div>

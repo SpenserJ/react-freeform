@@ -3,7 +3,7 @@
   "plugins": [
     ["module-resolver", {
       "alias": {
-        "react-neoform": "./src/"
+        "react-freeform": "./src/"
       }
     }]
   ]

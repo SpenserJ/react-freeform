@@ -2,8 +2,8 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
 
-import handler from 'react-neoform/HOC/handler';
-import ValueSubscriber from 'react-neoform/components/ValueSubscriber';
+import handler from 'react-freeform/HOC/handler';
+import ValueSubscriber from 'react-freeform/components/ValueSubscriber';
 
 // Tests that this should run after
 import '../HOC/handler'
