@@ -13,7 +13,8 @@ export default (WrappedComponent) => {
     static displayName = `handler(${getDisplayName(WrappedComponent)})`;
 
     static childContextTypes = {
-      injector: PropTypes.func.isRequired,
+      nfGetValue: PropTypes.func.isRequired,
+      nfOnChange: PropTypes.func.isRequired,
       formSubscription: PropTypes.objectOf(PropTypes.func).isRequired,
     };
 
@@ -22,11 +23,6 @@ export default (WrappedComponent) => {
       this.state = {
         ...(this.state || {}),
         values: this.getDefaults(),
-      };
-
-      this._injector = {
-        getValue: this.getValue,
-        onChange: this.onChange,
       };
 
       this.subscriptions = [];
@@ -38,7 +34,8 @@ export default (WrappedComponent) => {
         : {};
       return {
         ...superChildContext,
-        injector: this.injector,
+        nfGetValue: this.getValue,
+        nfOnChange: this.onChange,
         formSubscription: {
           subscribe: callback => this.subscriptions.push(callback),
           unsubscribe: (callback) => {
@@ -46,10 +43,6 @@ export default (WrappedComponent) => {
           },
         },
       }
-    }
-
-    injector = () => {
-      return this._injector;
     }
 
     getDefaults() {

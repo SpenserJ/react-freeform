@@ -16,12 +16,25 @@ export default class ValueSubscriber extends Subscriber {
 
   static contextTypes = {
     ...Subscriber.contextTypes,
-    injector: PropTypes.func.isRequired,
+    nfGetValue: PropTypes.func.isRequired,
+    nfOnChange: PropTypes.func.isRequired,
+  };
+
+  static childContextTypes = {
+    nfGetValue: PropTypes.func.isRequired,
+    nfOnChange: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
     super(props, context);
     this.oldValue = undefined;
+  }
+
+  getChildContext() {
+    return {
+      nfGetValue: this.getValue,
+      nfOnChange: this.onChange,
+    };
   }
 
   componentDidMount() {
@@ -30,7 +43,7 @@ export default class ValueSubscriber extends Subscriber {
   }
 
   onChange = (e) => {
-    this.context.injector().onChange(fakeChangeEvent(
+    this.context.nfOnChange(fakeChangeEvent(
       [this.props.name].concat(e.target.name).filter(v => !!v),
       e.target.value,
     ));
@@ -49,7 +62,7 @@ export default class ValueSubscriber extends Subscriber {
   }
 
   getValue = () => {
-    const value = this.context.injector().getValue();
+    const value = this.context.nfGetValue();
     if (!value) { return value; }
     return this.props.name ? value[this.props.name] : value;
   }

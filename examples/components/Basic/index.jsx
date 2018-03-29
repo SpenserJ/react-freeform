@@ -37,10 +37,10 @@ export default () => (
       <Freeform.Field name="string" />
       <Freeform.Field name="value2" />
       <Freeform.Field name="checkbox" type="checkbox" />
-      <Freeform.NestedValues name="nested">
+      <Freeform.ValueSubscriber name="nested">
         <Freeform.Field name="child1" />
         <Freeform.Field name="child2" />
-      </Freeform.NestedValues>
+      </Freeform.ValueSubscriber>
       <ContextBlocker>
         <h1>Context Blocked</h1>
         <Freeform.Field name="contextBlocked" />
