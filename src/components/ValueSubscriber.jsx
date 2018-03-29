@@ -18,11 +18,12 @@ export default class ValueSubscriber extends Subscriber {
     ...Subscriber.contextTypes,
     nfGetValue: PropTypes.func.isRequired,
     nfOnChange: PropTypes.func.isRequired,
+    nfFullName: PropTypes.func.isRequired,
   };
 
   static childContextTypes = {
     nfGetValue: PropTypes.func.isRequired,
-    nfOnChange: PropTypes.func.isRequired,
+    nfFullName: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -33,7 +34,7 @@ export default class ValueSubscriber extends Subscriber {
   getChildContext() {
     return {
       nfGetValue: this.getValue,
-      nfOnChange: this.onChange,
+      nfFullName: this.getName,
     };
   }
 
@@ -43,10 +44,8 @@ export default class ValueSubscriber extends Subscriber {
   }
 
   onChange = (e) => {
-    this.context.nfOnChange(fakeChangeEvent(
-      [this.props.name].concat(e.target.name).filter(v => !!v),
-      e.target.value,
-    ));
+    const name = e.target.name ? this.getName().concat(e.target.name) : this.getName();
+    this.context.nfOnChange(fakeChangeEvent(name, e.target.value));
   }
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -66,4 +65,10 @@ export default class ValueSubscriber extends Subscriber {
     if (!value) { return value; }
     return this.props.name ? value[this.props.name] : value;
   }
+
+  getName = () => {
+    const parentName = this.context.nfFullName();
+    if (!this.props.name) { return parentName; }
+    return parentName.concat(this.props.name);
+  };
 }
