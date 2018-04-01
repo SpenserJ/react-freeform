@@ -38,7 +38,11 @@ export default class Subscriber extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = { renderTrigger: true };
-    this.subscription = new Subscription(this, () => this.setState({}));
+    this.subscription = new Subscription(this, () => this.triggerUpdate());
+  }
+
+  triggerUpdate() {
+    this.setState({});
   }
 
   componentDidMount() {

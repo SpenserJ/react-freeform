@@ -22,7 +22,8 @@ class TestForm extends React.Component {
 }
 
 const Handler = Freeform.handler(TestForm);
-const WrappedClass = Freeform.submit(Handler);
+const Submit = Freeform.submit(Handler);
+const WrappedClass = Freeform.valid(Submit);
 
 class ContextBlocker extends React.PureComponent {
   render() {
@@ -34,6 +35,13 @@ export default () => (
   <div>
     <WrappedClass>
       <h1>Hello Class</h1>
+      <Freeform.Validation
+        rules={(value, invalidate) => {
+          if (!value.string) {
+            invalidate('First field cannot be empty');
+          }
+        }}
+      />
       <Freeform.Field name="string" />
       <Freeform.Field name="value2" />
       <Freeform.Field name="checkbox" type="checkbox" />
