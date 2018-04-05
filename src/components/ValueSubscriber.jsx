@@ -16,12 +16,26 @@ export default class ValueSubscriber extends Subscriber {
 
   static contextTypes = {
     ...Subscriber.contextTypes,
-    injector: PropTypes.func.isRequired,
+    nfGetValue: PropTypes.func.isRequired,
+    nfOnChange: PropTypes.func.isRequired,
+    nfFullName: PropTypes.func.isRequired,
+  };
+
+  static childContextTypes = {
+    nfGetValue: PropTypes.func.isRequired,
+    nfFullName: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
     super(props, context);
     this.oldValue = undefined;
+  }
+
+  getChildContext() {
+    return {
+      nfGetValue: this.getValue,
+      nfFullName: this.getName,
+    };
   }
 
   componentDidMount() {
@@ -30,10 +44,8 @@ export default class ValueSubscriber extends Subscriber {
   }
 
   onChange = (e) => {
-    this.context.injector().onChange(fakeChangeEvent(
-      [this.props.name].concat(e.target.name).filter(v => !!v),
-      e.target.value,
-    ));
+    const name = e.target.name ? this.getName().concat(e.target.name) : this.getName();
+    this.context.nfOnChange(fakeChangeEvent(name, e.target.value));
   }
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -49,8 +61,14 @@ export default class ValueSubscriber extends Subscriber {
   }
 
   getValue = () => {
-    const value = this.context.injector().getValue();
+    const value = this.context.nfGetValue();
     if (!value) { return value; }
     return this.props.name ? value[this.props.name] : value;
   }
+
+  getName = () => {
+    const parentName = this.context.nfFullName();
+    if (!this.props.name) { return parentName; }
+    return parentName.concat(this.props.name);
+  };
 }

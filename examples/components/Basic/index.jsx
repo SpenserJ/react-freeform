@@ -12,6 +12,10 @@ class TestForm extends React.Component {
         child1: "I'm a child",
         child2: 'So am I',
       },
+      passwords: {
+        first: '',
+        second: '',
+      },
       contextBlocked: 'Make me render',
     };
   }
@@ -22,7 +26,8 @@ class TestForm extends React.Component {
 }
 
 const Handler = Freeform.handler(TestForm);
-const WrappedClass = Freeform.submit(Handler);
+const Submit = Freeform.submit(Handler);
+const WrappedClass = Freeform.valid(Submit);
 
 class ContextBlocker extends React.PureComponent {
   render() {
@@ -34,13 +39,38 @@ export default () => (
   <div>
     <WrappedClass>
       <h1>Hello Class</h1>
+      <Freeform.Validation
+        rules={(value, invalidate) => {
+          if (!value.string) {
+            invalidate('First field cannot be empty');
+          }
+        }}
+      />
       <Freeform.Field name="string" />
       <Freeform.Field name="value2" />
       <Freeform.Field name="checkbox" type="checkbox" />
-      <Freeform.NestedValues name="nested">
+      <Freeform.ValueSubscriber name="nested">
         <Freeform.Field name="child1" />
         <Freeform.Field name="child2" />
-      </Freeform.NestedValues>
+      </Freeform.ValueSubscriber>
+      <Freeform.Validation
+        name="passwords"
+        rules={(value, invalidate) => {
+          if (value.first !== value.second) {
+            invalidate('Passwords do not match');
+          }
+        }}
+      >
+        <Freeform.Validation
+          name="first"
+          rules={(value, invalidate) => {
+            if (!value) { invalidate('Password cannot be empty'); }
+          }}
+        >
+          <Freeform.Field />
+        </Freeform.Validation>
+        <Freeform.Field name="second" />
+      </Freeform.Validation>
       <ContextBlocker>
         <h1>Context Blocked</h1>
         <Freeform.Field name="contextBlocked" />

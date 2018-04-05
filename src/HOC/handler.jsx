@@ -13,7 +13,9 @@ export default (WrappedComponent) => {
     static displayName = `handler(${getDisplayName(WrappedComponent)})`;
 
     static childContextTypes = {
-      injector: PropTypes.func.isRequired,
+      nfGetValue: PropTypes.func.isRequired,
+      nfOnChange: PropTypes.func.isRequired,
+      nfFullName: PropTypes.func.isRequired,
       formSubscription: PropTypes.objectOf(PropTypes.func).isRequired,
     };
 
@@ -22,11 +24,6 @@ export default (WrappedComponent) => {
       this.state = {
         ...(this.state || {}),
         values: this.getDefaults(),
-      };
-
-      this._injector = {
-        getValue: this.getValue,
-        onChange: this.onChange,
       };
 
       this.subscriptions = [];
@@ -38,7 +35,9 @@ export default (WrappedComponent) => {
         : {};
       return {
         ...superChildContext,
-        injector: this.injector,
+        nfGetValue: this.getValue,
+        nfOnChange: this.onChange,
+        nfFullName: () => ([]),
         formSubscription: {
           subscribe: callback => this.subscriptions.push(callback),
           unsubscribe: (callback) => {
@@ -48,30 +47,25 @@ export default (WrappedComponent) => {
       }
     }
 
-    injector = () => {
-      return this._injector;
-    }
-
     getDefaults() {
       if (typeof super.getDefaults !== 'function') { return {}; }
       return super.getDefaults();
     }
 
-    getValue = () => {
-      return this.state.values;
-    }
+    getValue = () => this.state.values;
 
     onChange = (e) => {
       this.setState({
         values: immutableObject.set(this.state.values, e.target.name, e.target.value),
-      }, () => {
-        this.subscriptions.forEach(callback => callback());
-      })
+      }, () => this.triggerUpdate());
     }
 
-    formProps() {
-      return {};
+    triggerUpdate() {
+      this.subscriptions.forEach(callback => callback());
     }
+
+    // eslint-disable-next-line class-methods-use-this
+    formProps() { return {}; }
 
     render() {
       const content = super.render ? super.render() : this.props.children;
