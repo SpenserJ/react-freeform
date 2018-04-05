@@ -23,6 +23,7 @@ export default (WrappedComponent) => {
         ...(this.state || {}),
         validationResults: [],
       };
+      this.dirtyValidationResults = [];
     }
 
     getChildContext() {
@@ -36,8 +37,9 @@ export default (WrappedComponent) => {
     }
 
     updateValidation = (oldValidation, newValidation) => {
-      const validationResults = this.state.validationResults.filter(v => v !== oldValidation);
+      const validationResults = this.dirtyValidationResults.filter(v => v !== oldValidation);
       if (newValidation.length !== 0) { validationResults.push(newValidation); }
+      this.dirtyValidationResults = validationResults;
       this.setState({ validationResults }, () => this.triggerUpdate());
     }
 
