@@ -12,6 +12,10 @@ class TestForm extends React.Component {
         child1: "I'm a child",
         child2: 'So am I',
       },
+      passwords: {
+        first: '',
+        second: '',
+      },
       contextBlocked: 'Make me render',
     };
   }
@@ -49,6 +53,24 @@ export default () => (
         <Freeform.Field name="child1" />
         <Freeform.Field name="child2" />
       </Freeform.ValueSubscriber>
+      <Freeform.Validation
+        name="passwords"
+        rules={(value, invalidate) => {
+          if (value.first !== value.second) {
+            invalidate('Passwords do not match');
+          }
+        }}
+      >
+        <Freeform.Validation
+          name="first"
+          rules={(value, invalidate) => {
+            if (!value) { invalidate('Password cannot be empty'); }
+          }}
+        >
+          <Freeform.Field />
+        </Freeform.Validation>
+        <Freeform.Field name="second" />
+      </Freeform.Validation>
       <ContextBlocker>
         <h1>Context Blocked</h1>
         <Freeform.Field name="contextBlocked" />

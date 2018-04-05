@@ -32,7 +32,13 @@ export default class Validation extends ValueSubscriber {
         PropTypes.arrayOf(PropTypes.func),
       ]),
     ]).isRequired,
+    displayBeforeChildren: PropTypes.bool,
   };
+
+  static defaultProps = {
+    ...ValueSubscriber.defaultProps,
+    displayBeforeChildren: false,
+  }
 
   static contextTypes = {
     ...ValueSubscriber.contextTypes,
@@ -41,7 +47,10 @@ export default class Validation extends ValueSubscriber {
 
   constructor(props, context) {
     super(props, context);
-    this.oldValidation = [];
+    this.state = {
+      ...this.state,
+      validationResult: [],
+    };
   }
 
   triggerUpdate() {
@@ -65,12 +74,12 @@ export default class Validation extends ValueSubscriber {
     runValidationRules(this.props.rules, value, invalidate);
 
     // Check validation results for differences
-    if (this.oldValidation.length === result.length) {
+    if (this.state.validationResult.length === result.length) {
       let validationChanged = false;
       let i = 0;
       while (validationChanged === false && i < result.length) {
         const newVal = result[i];
-        const oldVal = this.oldValidation[i];
+        const oldVal = this.state.validationResult[i];
         if (newVal[0].join('|') !== oldVal[0].join('|') || newVal[1] !== oldVal[1]) {
           validationChanged = true;
         }
@@ -80,7 +89,30 @@ export default class Validation extends ValueSubscriber {
       if (validationChanged === false) { return; }
     }
 
-    this.context.nfUpdateValidation(this.oldValidation, result);
-    this.oldValidation = result;
+    const oldResult = this.state.validationResult;
+    this.setState({ validationResult: result });
+    this.context.nfUpdateValidation(oldResult, result);
+  }
+
+  renderErrors() {
+    if (this.state.validationResult.length === 0) { return null; }
+    return (
+      <ul>
+        {/* eslint-disable-next-line react/no-array-index-key */}
+        {this.state.validationResult.map((v, i) => <li key={i}>{v}</li>)}
+      </ul>
+    );
+  }
+
+  render() {
+    const { displayBeforeChildren } = this.props;
+    const children = super.render();
+    return (
+      <React.Fragment>
+        {displayBeforeChildren ? null : children}
+        {this.renderErrors()}
+        {displayBeforeChildren ? children : null}
+      </React.Fragment>
+    );
   }
 }
