@@ -29,7 +29,6 @@ export default class Field extends ValueSubscriber {
       onChange: this.onChange,
       value: this.getValue(),
     };
-    console.log('rendering', this.getName())
     return (
       <FieldType
         {...fieldProps}

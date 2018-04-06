@@ -5,3 +5,4 @@ export Field from './components/Field';
 export ValueSubscriber from './components/ValueSubscriber';
 export CanSubmit from './components/CanSubmit';
 export Validation from './components/Validation';
+export WithValue from './components/WithValue';

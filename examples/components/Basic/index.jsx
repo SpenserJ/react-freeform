@@ -16,6 +16,9 @@ class TestForm extends React.Component {
         first: '',
         second: '',
       },
+      array: [
+        { a: '', b: '' },
+      ],
       contextBlocked: 'Make me render',
     };
   }
@@ -71,12 +74,28 @@ export default () => (
         </Freeform.Validation>
         <Freeform.Field name="second" />
       </Freeform.Validation>
+      <Freeform.WithValue name="array">{value => JSON.stringify(value)}</Freeform.WithValue>
+      <Freeform.WithValue name="array">
+        {values => values.map((value, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Freeform.ValueSubscriber name={i} key={i}>
+            <Freeform.Field name="a" />
+            <Freeform.Field name="b" />
+          </Freeform.ValueSubscriber>
+        ))}
+      </Freeform.WithValue>
       <ContextBlocker>
         <h1>Context Blocked</h1>
         <Freeform.Field name="contextBlocked" />
       </ContextBlocker>
-      <Freeform.CanSubmit>{(val) => JSON.stringify(val)}</Freeform.CanSubmit>
-      <input type="submit" />
+      <Freeform.CanSubmit>
+        {val => (
+          <div>
+            {JSON.stringify(val)}
+            <input type="submit" disabled={!val.canSubmit} />
+          </div>
+        )}
+      </Freeform.CanSubmit>
     </WrappedClass>
   </div>
 );

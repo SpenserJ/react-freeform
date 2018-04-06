@@ -6,7 +6,10 @@ import Subscriber from './Subscriber';
 export default class ValueSubscriber extends Subscriber {
   static propTypes = {
     ...Subscriber.propTypes,
-    name: PropTypes.string,
+    name: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
   };
 
   static defaultProps = {
@@ -63,12 +66,14 @@ export default class ValueSubscriber extends Subscriber {
   getValue = () => {
     const value = this.context.nfGetValue();
     if (!value) { return value; }
-    return this.props.name ? value[this.props.name] : value;
+    return (typeof this.props.name !== 'undefined' && this.props.name !== '')
+      ? value[this.props.name]
+      : value;
   }
 
   getName = () => {
     const parentName = this.context.nfFullName();
-    if (!this.props.name) { return parentName; }
+    if (typeof this.props.name === 'undefined' || this.props.name === '') { return parentName; }
     return parentName.concat(this.props.name);
   };
 }
