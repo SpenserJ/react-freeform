@@ -1,11 +1,12 @@
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount, render } from 'enzyme';
+import { mount } from 'enzyme';
 
 import handler from 'react-freeform/HOC/handler';
 import ValueSubscriber from 'react-freeform/components/ValueSubscriber';
 
 // Tests that this should run after
+import '../components/Subscriber'
 import '../HOC/handler'
 
 const defaultValues = {
@@ -37,7 +38,7 @@ describe('components/ValueSubscriber', () => {
   it('handles onChange events without a name', () => {
     const wrapper = mount(<Handler><ValueSubscriber /></Handler>);
     const component = wrapper.find('ValueSubscriber').instance();
-    component.onChange({ target: { name: undefined, value: 'test' }});
+    component.onChange({ target: { name: undefined, value: 'test' } });
     expect(component.getValue()).to.equal('test');
   });
 
@@ -45,7 +46,7 @@ describe('components/ValueSubscriber', () => {
     const wrapper = mount(<Handler><ValueSubscriber name="d" /></Handler>);
     const component = wrapper.find('ValueSubscriber').instance();
     const newVal = { a: true, b: false };
-    component.onChange({ target: { name: undefined, value: newVal }})
+    component.onChange({ target: { name: undefined, value: newVal } });
     expect(component.getValue()).to.equal(newVal);
   });
 
@@ -53,7 +54,7 @@ describe('components/ValueSubscriber', () => {
     const wrapper = mount(<Handler><ValueSubscriber /></Handler>);
     const component = wrapper.find('ValueSubscriber').instance();
     const newVal = { a: true, b: false };
-    component.onChange({ target: { name: 'd', value: newVal }})
+    component.onChange({ target: { name: 'd', value: newVal } });
     expect(component.getValue().d).to.equal(newVal);
   });
 });
