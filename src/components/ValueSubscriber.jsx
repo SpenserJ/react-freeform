@@ -36,7 +36,7 @@ export default class ValueSubscriber extends Subscriber {
 
   getChildContext() {
     return {
-      nfGetValue: this.getValue,
+      nfGetValue: () => this.getValue(),
       nfFullName: this.getName,
     };
   }
@@ -46,7 +46,7 @@ export default class ValueSubscriber extends Subscriber {
     this.oldValue = this.getValue();
   }
 
-  onChange = (e) => {
+  onChange(e) {
     let name = this.getName();
     let value = e;
     if (e && e.target) {
@@ -70,7 +70,7 @@ export default class ValueSubscriber extends Subscriber {
     return false;
   }
 
-  getValue = () => {
+  getValue() {
     const value = this.context.nfGetValue();
     if (!value) { return value; }
     return (typeof this.props.name !== 'undefined' && this.props.name !== '')
