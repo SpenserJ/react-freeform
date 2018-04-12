@@ -36,7 +36,7 @@ export default class ValueSubscriber extends Subscriber {
 
   getChildContext() {
     return {
-      nfGetValue: this.getValue,
+      nfGetValue: () => this.getValue(),
       nfFullName: this.getName,
     };
   }
@@ -46,9 +46,16 @@ export default class ValueSubscriber extends Subscriber {
     this.oldValue = this.getValue();
   }
 
-  onChange = (e) => {
-    const name = e.target.name ? this.getName().concat(e.target.name) : this.getName();
-    this.context.nfOnChange(fakeChangeEvent(name, e.target.value));
+  onChange(e) {
+    let name = this.getName();
+    let value = e;
+    if (e && e.target) {
+      if (typeof e.target.name !== 'undefined' && e.target.name !== '') {
+        name = name.concat(e.target.name);
+      }
+      value = e.target.value; // eslint-disable-line prefer-destructuring
+    }
+    this.context.nfOnChange(fakeChangeEvent(name, value));
   }
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -63,7 +70,7 @@ export default class ValueSubscriber extends Subscriber {
     return false;
   }
 
-  getValue = () => {
+  getValue() {
     const value = this.context.nfGetValue();
     if (!value) { return value; }
     return (typeof this.props.name !== 'undefined' && this.props.name !== '')

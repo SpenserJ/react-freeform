@@ -13,7 +13,8 @@
     "dev:examples": "webpack-dev-server --config ./webpack/examples.config.babel.js --hot",
     "test": "NODE_ENV=test nyc npm run test:raw",
     "test:raw": "NODE_ENV=test mocha --require babel-register --require test/test_helper.js --recursive test/**/*.{js,jsx}",
-    "test:single": "NODE_ENV=test mocha --require babel-register --require test/test_helper.js --recursive"
+    "test:single": "NODE_ENV=test mocha --require babel-register --require test/test_helper.js --recursive",
+    "preversion": "npm run build && npm run test"
   },
   "repository": {
     "type": "git",

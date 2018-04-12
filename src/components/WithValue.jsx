@@ -9,11 +9,13 @@ export default class WithValue extends ValueSubscriber {
     children: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    ...ValueSubscriber.defaultProps,
-  };
-
   render() {
-    return <React.Fragment>{this.props.children(this.getValue())}</React.Fragment>;
+    return (
+      <React.Fragment>{this.props.children(
+        this.getValue(),
+        { onChange: e => this.onChange(e) },
+      )}
+      </React.Fragment>
+    );
   }
 }

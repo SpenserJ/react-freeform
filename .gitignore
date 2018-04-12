@@ -25,7 +25,7 @@ a nyc test coverage
 node_modules/
 
 # Package lock and shrinkwrapping
-package-lock.json
+# package-lock.json # commented until I understand why `npm version` wants it
 npm-shrinkwrap.json
 
 # Optional npm cache directory

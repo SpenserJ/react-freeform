@@ -23,10 +23,12 @@ export default class Field extends ValueSubscriber {
     return otherProps;
   }
 
+  boundOnChange = e => this.onChange(e)
+
   render() {
     const FieldType = this.props.component;
     const fieldProps = {
-      onChange: this.onChange,
+      onChange: this.boundOnChange,
       value: this.getValue(),
     };
     return (
