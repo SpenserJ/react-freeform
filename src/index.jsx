@@ -7,4 +7,5 @@ export ValueTransformer from './components/ValueTransformer';
 export CanSubmit from './components/CanSubmit';
 export Validation from './components/Validation';
 export WithValue from './components/WithValue';
+export Label from './components/Label';
 export { fakeChangeEvent } from './utilities';

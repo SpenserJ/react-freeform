@@ -18,6 +18,11 @@ export default class Field extends ValueSubscriber {
     component: Input,
   };
 
+  static contextTypes = {
+    ...ValueSubscriber.contextTypes,
+    nfFormIndex: PropTypes.number.isRequired,
+  }
+
   getOtherProps() {
     const {
       name,
@@ -37,6 +42,7 @@ export default class Field extends ValueSubscriber {
       onChange: this.boundOnChange,
       value: this.getValue(),
       'data-name': this.getName().join('.'),
+      id: `${this.context.nfFormIndex}.${this.getName().join('.')}`,
     };
     if (typeof otherProps.value !== 'undefined') {
       fieldProps['data-value'] = fieldProps.value;

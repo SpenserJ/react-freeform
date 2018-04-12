@@ -4,6 +4,8 @@ import immutableObject from 'object-path-immutable';
 
 import { getDisplayName } from '../utilities';
 
+let formIndex = 0;
+
 export default (WrappedComponent) => {
   if (!WrappedComponent.prototype.isReactComponent) {
     throw 'Cannot extend a pure component';
@@ -16,11 +18,14 @@ export default (WrappedComponent) => {
       nfGetValue: PropTypes.func.isRequired,
       nfOnChange: PropTypes.func.isRequired,
       nfFullName: PropTypes.func.isRequired,
+      nfFormIndex: PropTypes.number.isRequired,
       formSubscription: PropTypes.objectOf(PropTypes.func).isRequired,
     };
 
     constructor(props, context) {
       super(props, context);
+      this.formIndex = formIndex;
+      formIndex += 1;
       this.state = {
         ...(this.state || {}),
         values: this.getDefaults(),
@@ -38,6 +43,7 @@ export default (WrappedComponent) => {
         nfGetValue: this.getValue,
         nfOnChange: this.onChange,
         nfFullName: () => ([]),
+        nfFormIndex: this.formIndex,
         formSubscription: {
           subscribe: callback => this.subscriptions.push(callback),
           unsubscribe: (callback) => {

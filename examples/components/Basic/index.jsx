@@ -129,6 +129,7 @@ export default () => (
         <Freeform.WithValue>
           { values => values.map((value, i) => (
             <Freeform.ValueSubscriber key={i} name={i}>
+              <Freeform.Label htmlFor="weight">Weight: </Freeform.Label>
               <Freeform.Field name="weight" />
               <Freeform.WithValue name="values">
                 { items => JSON.stringify(items)}
