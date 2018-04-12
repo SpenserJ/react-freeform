@@ -3,6 +3,10 @@ import React from 'react';
 import * as Freeform from 'react-freeform';
 
 class TestForm extends React.Component {
+  onSubmit(values) {
+    console.log('Submitting', values);
+  }
+
   getDefaults() {
     return {
       string: 'Hello',
@@ -19,12 +23,21 @@ class TestForm extends React.Component {
       array: [
         { a: '', b: '' },
       ],
+      transform: [{
+        value: 'test',
+        weight: 3,
+      },
+      {
+        value: 'inner',
+        weight: 1,
+      },
+      {
+        value: 'value',
+        weight: 3,
+      },
+    ],
       contextBlocked: 'Make me render',
     };
-  }
-
-  onSubmit(values) {
-    console.log('Submitting', values);
   }
 }
 
@@ -99,6 +112,34 @@ export default () => (
           );
         }}
       </Freeform.WithValue>
+      <br />
+      <Freeform.ValueTransformer
+        name="transform"
+        transformOnChange={values => values.reduce((acc, next) => (
+          acc.concat(next.values.map(value => ({ value, weight: next.weight })))
+        ), [])}
+        transformValue={values => Object.values(values.reduce((acc, next) => {
+          if (!acc[next.weight]) {
+            acc[next.weight] = { values: [], weight: next.weight };
+          }
+          acc[next.weight].values.push(next.value);
+          return acc;
+        }, {}))}
+      >
+        <Freeform.WithValue>{value => JSON.stringify(value)}</Freeform.WithValue>
+        <br />
+        <Freeform.WithValue>
+          { values => values.map((value, i) => (
+            <Freeform.ValueSubscriber key={i} name={i}>
+              <Freeform.Field name="weight" />
+              <Freeform.WithValue name="values">
+                { items => JSON.stringify(items)}
+              </Freeform.WithValue>
+              <br />
+            </Freeform.ValueSubscriber>
+          ))}
+        </Freeform.WithValue>
+      </Freeform.ValueTransformer>
       <ContextBlocker>
         <h1>Context Blocked</h1>
         <Freeform.Field name="contextBlocked" />
