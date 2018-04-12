@@ -15,6 +15,7 @@ class TestForm extends React.Component {
       nested: {
         child1: "I'm a child",
         child2: 'So am I',
+        radio: 'a',
       },
       passwords: {
         first: '',
@@ -23,19 +24,11 @@ class TestForm extends React.Component {
       array: [
         { a: '', b: '' },
       ],
-      transform: [{
-        value: 'test',
-        weight: 3,
-      },
-      {
-        value: 'inner',
-        weight: 1,
-      },
-      {
-        value: 'value',
-        weight: 3,
-      },
-    ],
+      transform: [
+        { value: 'test', weight: 3 },
+        { value: 'inner', weight: 1 },
+        { value: 'value', weight: 3 },
+      ],
       contextBlocked: 'Make me render',
     };
   }
@@ -68,6 +61,11 @@ export default () => (
       <Freeform.ValueSubscriber name="nested">
         <Freeform.Field name="child1" />
         <Freeform.Field name="child2" />
+        <Freeform.Field name="radio" value="a" type="radio" />
+        <Freeform.Field name="radio" value="b" type="radio" />
+        <Freeform.Field name="radio" value="c" type="radio" />
+        <Freeform.Field name="radio2" value="1" type="radio" />
+        <Freeform.Field name="radio2" value="2" type="radio" />
       </Freeform.ValueSubscriber>
       <Freeform.Validation
         name="passwords"

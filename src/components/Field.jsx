@@ -19,7 +19,12 @@ export default class Field extends ValueSubscriber {
   };
 
   getOtherProps() {
-    const { name, component, ...otherProps } = this.props;
+    const {
+      name,
+      component,
+      onChange,
+      ...otherProps
+    } = this.props;
     return otherProps;
   }
 
@@ -27,14 +32,19 @@ export default class Field extends ValueSubscriber {
 
   render() {
     const FieldType = this.props.component;
+    const otherProps = this.getOtherProps();
     const fieldProps = {
       onChange: this.boundOnChange,
       value: this.getValue(),
+      'data-name': this.getName().join('.'),
     };
+    if (typeof otherProps.value !== 'undefined') {
+      fieldProps['data-value'] = fieldProps.value;
+    }
     return (
       <FieldType
         {...fieldProps}
-        {...this.getOtherProps()}
+        {...otherProps}
       />
     );
   }
