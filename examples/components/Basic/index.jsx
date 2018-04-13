@@ -25,9 +25,9 @@ class TestForm extends React.Component {
         { a: '', b: '' },
       ],
       transform: [
-        { value: 'test', weight: 3 },
-        { value: 'inner', weight: 1 },
-        { value: 'value', weight: 3 },
+        { value: 'test', group: 3 },
+        { value: 'inner', group: 1 },
+        { value: 'value', group: 3 },
       ],
       contextBlocked: 'Make me render',
     };
@@ -114,23 +114,34 @@ export default () => (
       <Freeform.ValueTransformer
         name="transform"
         transformOnChange={values => values.reduce((acc, next) => (
-          acc.concat(next.values.map(value => ({ value, weight: next.weight })))
+          acc.concat(next.values.map(value => ({ value, group: next.group })))
         ), [])}
-        transformValue={values => Object.values(values.reduce((acc, next) => {
-          if (!acc[next.weight]) {
-            acc[next.weight] = { values: [], weight: next.weight };
-          }
-          acc[next.weight].values.push(next.value);
-          return acc;
-        }, {}))}
+        transformValue={(values) => {
+          // Transformed will be an ordered array
+          const transformed = [];
+          // We use a reduce into an object, keyed by our group property to reduce
+          // the time spent looking for an existing group
+          values.reduce((acc, next) => {
+            if (!acc[next.group]) {
+              // If we haven't seen this group before, add it to the object and push
+              // the new object into our ordered array.
+              acc[next.group] = { values: [], group: next.group };
+              transformed.push(acc[next.group]);
+            }
+            // Push the value into the group
+            acc[next.group].values.push(next.value);
+            return acc;
+          }, {});
+          return transformed;
+        }}
       >
         <Freeform.WithValue>{value => JSON.stringify(value)}</Freeform.WithValue>
         <br />
         <Freeform.WithValue>
-          { values => values.map((value, i) => (
+          {values => values.map((value, i) => (
             <Freeform.ValueSubscriber key={i} name={i}>
-              <Freeform.Label htmlFor="weight">Weight: </Freeform.Label>
-              <Freeform.Field name="weight" />
+              <Freeform.Label htmlFor="group">Group: </Freeform.Label>
+              <Freeform.Field name="group" />
               <Freeform.WithValue name="values">
                 { items => JSON.stringify(items)}
               </Freeform.WithValue>
