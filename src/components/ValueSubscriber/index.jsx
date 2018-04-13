@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types';
 
-import { fakeChangeEvent } from '../utilities';
-import Subscriber from './Subscriber';
+import { fakeChangeEvent } from '../../utilities';
+import Subscriber from '../Subscriber/';
 
 export default class ValueSubscriber extends Subscriber {
   static propTypes = {
     ...Subscriber.propTypes,
+    /**
+     * The name to use to fetch values from.
+     */
     name: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
@@ -83,4 +86,7 @@ export default class ValueSubscriber extends Subscriber {
     if (typeof this.props.name === 'undefined' || this.props.name === '') { return parentName; }
     return parentName.concat(this.props.name);
   };
+
+  // Super render for supporting react-docgen
+  render() { return super.render(); }
 }

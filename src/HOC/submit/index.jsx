@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import immutableObject from 'object-path-immutable';
 
-import { getDisplayName } from '../utilities';
+import { getDisplayName } from '../../utilities';
 
 export default (WrappedComponent) => {
   if (!WrappedComponent.prototype.isReactComponent) {

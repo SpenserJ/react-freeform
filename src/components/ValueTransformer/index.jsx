@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import immutableObject from 'object-path-immutable';
-import ValueSubscriber from './ValueSubscriber';
+import ValueSubscriber from '../ValueSubscriber/';
 
 export default class ValueTransformer extends ValueSubscriber {
   static propTypes = {
@@ -32,4 +32,7 @@ export default class ValueTransformer extends ValueSubscriber {
     const value = super.getValue();
     return this.props.transformValue(value);
   }
+
+  // Super render for supporting react-docgen
+  render() { return super.render(); }
 }

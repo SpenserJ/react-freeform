@@ -1,10 +1,15 @@
 import PropTypes from 'prop-types';
 
-import Subscriber from './Subscriber';
+import Subscriber from '../Subscriber/';
 
 export default class CanSubmit extends Subscriber {
   static propTypes = {
     ...Subscriber.propTypes,
+    /**
+     * A render function that will receive information on the status of the form.
+     * @param {Object} status
+     *   An object containing flags such as whether the form can be submitted or is loading
+     */
     children: PropTypes.func.isRequired,
   };
 

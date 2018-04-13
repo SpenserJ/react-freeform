@@ -1,16 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ValueSubscriber from './ValueSubscriber';
-import Input from './Input';
+import ValueSubscriber from '../ValueSubscriber/';
+import Input from '../Input/';
 
 export default class Field extends ValueSubscriber {
   static propTypes = {
     ...ValueSubscriber.propTypes,
+    /**
+     * What component to use for displaying the field itself
+     */
     component: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.func,
     ]),
+    /**
+     * Children aren't used by Field, since it is rendering the `component` prop.
+     * @ignore
+     */
+    children: PropTypes.oneOf([null]),
   };
 
   static defaultProps = {
