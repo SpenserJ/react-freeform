@@ -73,6 +73,10 @@ export default class ValueSubscriber extends Subscriber {
     return false;
   }
 
+  /**
+   * Get the value at this form level
+   * @returns {any}
+   */
   getValue() {
     const value = this.context.nfGetValue();
     if (!value) { return value; }
@@ -81,6 +85,10 @@ export default class ValueSubscriber extends Subscriber {
       : value;
   }
 
+  /**
+   * Get the name at this form level
+   * @returns {array} Array of the names, including (grand)parents
+   */
   getName = () => {
     const parentName = this.context.nfFullName();
     if (typeof this.props.name === 'undefined' || this.props.name === '') { return parentName; }
