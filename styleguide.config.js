@@ -34,4 +34,12 @@ module.exports = {
   context: {
     ExampleForm: path.resolve(__dirname, 'docs/ExampleForm.jsx'),
   },
+  pagePerSection: true,
+  ribbon: {
+    url: 'https://github.com/SpenserJ/react-freeform',
+    text: 'Fork me on GitHub',
+  },
+  showCode: true,
+  showUsage: true,
+  title: 'React Freeform',
 };

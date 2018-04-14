@@ -76,6 +76,7 @@ export default class ValueSubscriber extends Subscriber {
   /**
    * Get the value at this form level
    * @returns {any}
+   * @public
    */
   getValue() {
     const value = this.context.nfGetValue();
@@ -88,6 +89,7 @@ export default class ValueSubscriber extends Subscriber {
   /**
    * Get the name at this form level
    * @returns {array} Array of the names, including (grand)parents
+   * @public
    */
   getName = () => {
     const parentName = this.context.nfFullName();
