@@ -14,7 +14,10 @@
     "test": "NODE_ENV=test nyc npm run test:raw",
     "test:raw": "NODE_ENV=test mocha --require babel-register --require test/test_helper.js --recursive test/**/*.{js,jsx}",
     "test:single": "NODE_ENV=test mocha --require babel-register --require test/test_helper.js --recursive",
-    "preversion": "npm run build && npm run test"
+    "preversion": "npm run build && npm run test",
+    "docs:dev": "npx styleguidist server",
+    "docs:build": "npx styleguidist build",
+    "docs:deploy": "npm run docs:build && gh-pages --dist styleguide"
   },
   "repository": {
     "type": "git",
@@ -25,7 +28,7 @@
   "bugs": {
     "url": "https://github.com/SpenserJ/react-freeform/issues"
   },
-  "homepage": "https://github.com/SpenserJ/react-freeform#readme",
+  "homepage": "http://spenserj.com/react-freeform/",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -50,6 +53,7 @@
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
+    "gh-pages": "^1.1.0",
     "jsdom": "^11.6.2",
     "library-utils": "^1.9.1",
     "mocha": "^5.0.5",

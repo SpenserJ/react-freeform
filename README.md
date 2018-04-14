@@ -6,11 +6,16 @@
 
 ## Installation
 
-React Freeform requires *React 16.0 or later.*
+React Freeform requires **React 16.0 or later**.
 
 ```sh static
 npm install --save react-freeform
 ```
+
+## Documentation
+
+* [Higher Order Components](http://spenserj.com/react-freeform/#!/Higher%20Order%20Components)
+* [Form Components](http://spenserj.com/react-freeform/#!/Form%20Components)
 
 ## License
 

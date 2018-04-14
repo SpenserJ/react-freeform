@@ -48,3 +48,6 @@ npm-shrinkwrap.json
 
 # Output of compilation
 lib
+
+# Documentation for gh-pages
+styleguide
