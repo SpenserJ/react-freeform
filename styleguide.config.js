@@ -3,9 +3,25 @@ const reactDoc = require('library-utils/react-doc');
 
 module.exports = {
   components: 'src/**/*.jsx',
-  webpackConfig: require('./webpack/examples.config.babel.js'),
+  webpackConfig: {
+    module: {
+      rules: [
+        {
+          test: /\.jsx?$/,
+          exclude: /node_modules/,
+          use: 'babel-loader',
+        },
+      ],
+    },
+    resolve: {
+      extensions: ['.js', '.jsx'],
+      alias: {
+        'react-freeform': path.join(__dirname, './src'),
+      },
+    },
+  },
   getComponentPathLine: (filePath) => {
-    const componentDirName = path.dirname(filePath);
+    const componentDirName = path.dirname(filePath).split('/').slice(1).join('/');
     const componentSourcesFileName = path.basename(filePath, '.jsx');
     const importPath = componentSourcesFileName === 'index'
       ? `${componentDirName}/`

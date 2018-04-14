@@ -46,6 +46,5 @@ npm-shrinkwrap.json
 # dotenv environment variables file
 .env
 
-examples/
 test/
-webpack/
+storybook/
