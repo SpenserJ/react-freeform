@@ -1,8 +1,5 @@
 import React from 'react';
-<<<<<<< HEAD
-=======
 import PropTypes from 'prop-types';
->>>>>>> Add additional tests for HOC/handler and HOC/submit
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
