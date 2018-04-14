@@ -65,6 +65,7 @@
     "react-dom": "^16.0.0"
   },
   "dependencies": {
+    "invariant": "^2.2.4",
     "object-path-immutable": "^1.0.1",
     "prop-types": "^15.5.10"
   },

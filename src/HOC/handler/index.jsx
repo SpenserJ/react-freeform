@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import immutableObject from 'object-path-immutable';
+import invariant from 'invariant';
 
 import { getDisplayName } from '../../utilities';
 
 let formIndex = 0;
 
 export default (WrappedComponent) => {
-  if (!WrappedComponent.prototype.isReactComponent) {
-    throw 'Cannot extend a pure component';
-  }
+  invariant(WrappedComponent.prototype.isReactComponent, 'Cannot extend a functional component');
 
   return class extends WrappedComponent {
     static displayName = `handler(${getDisplayName(WrappedComponent)})`;
@@ -51,7 +50,7 @@ export default (WrappedComponent) => {
             this.subscriptions = this.subscriptions.filter(v => v !== callback);
           },
         },
-      }
+      };
     }
 
     getDefaults() {

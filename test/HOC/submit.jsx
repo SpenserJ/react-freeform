@@ -14,6 +14,7 @@ describe('HOC/submit', () => {
   it('extends class-based components', () => {
     const TestHandler = submit(handler(Test));
     expect(TestHandler.displayName).to.equal('submit(handler(Test))');
+    expect(() => { submit(() => {}); }).to.throw('Cannot extend a functional component');
   });
 
   it("doesn't crash if used before handler", () => {

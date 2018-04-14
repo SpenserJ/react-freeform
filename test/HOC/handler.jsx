@@ -29,6 +29,7 @@ describe('HOC/handler', () => {
   it('extends class-based components', () => {
     const TestHandler = handler(Test);
     expect(TestHandler.displayName).to.equal('handler(Test)');
+    expect(() => { handler(() => {}); }).to.throw('Cannot extend a functional component');
   });
 
   it('updates the state when receiving an onChange', () => {
