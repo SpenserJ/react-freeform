@@ -1,4 +1,8 @@
 import React from 'react';
+<<<<<<< HEAD
+=======
+import PropTypes from 'prop-types';
+>>>>>>> Add additional tests for HOC/handler and HOC/submit
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
@@ -15,18 +19,30 @@ describe('HOC/submit', () => {
     expect(TestHandler.displayName).to.equal('submit(handler(Test))');
   });
 
-  it('sets isLoading and canSubmit to sane defaults', () => {
+  it("doesn't crash if used before handler", () => {
+    const TestHandler = handler(submit(Test));
+    expect(() => shallow(<TestHandler />).instance().getChildContext()).to.not.throw();
+  });
+
+  it('supports isLoading() and canSubmit()', () => {
     const DefaultHandler = submit(handler(Test));
     const childContext = shallow(<DefaultHandler />).instance().getChildContext();
     expect(childContext.nfCanSubmit()).to.equal(true);
     expect(childContext.nfIsLoading()).to.equal(false);
 
+    const SubmitHandler = submit(handler(class extends Test {
+      canSubmit() { return false; }
+    }));
+    const childContext2 = shallow(<SubmitHandler />).instance().getChildContext();
+    expect(childContext2.nfCanSubmit()).to.equal(false);
+    expect(childContext2.nfIsLoading()).to.equal(false);
+
     const LoadingHandler = submit(handler(class extends Test {
       isLoading() { return true; }
     }));
-    const childContext2 = shallow(<LoadingHandler />).instance().getChildContext();
-    expect(childContext2.nfCanSubmit()).to.equal(false);
-    expect(childContext2.nfIsLoading()).to.equal(true);
+    const childContext3 = shallow(<LoadingHandler />).instance().getChildContext();
+    expect(childContext3.nfCanSubmit()).to.equal(false);
+    expect(childContext3.nfIsLoading()).to.equal(true);
   });
 
   it('adds onSubmit to the formProps()', () => {
@@ -49,5 +65,15 @@ describe('HOC/submit', () => {
     wrapper.find('form').simulate('submit', { preventDefault });
     expect(callCount).to.equal(1);
     expect(preventDefault.calledOnce).to.equal(true);
+  });
+
+  it('retains childContext', () => {
+    const FormContextHandler = submit(handler(class extends Test {
+      static childContextTypes = { test: PropTypes.bool.isRequired };
+      getChildContext() { return { test: true }; }
+    }));
+    expect(FormContextHandler.childContextTypes.test).to.equal(PropTypes.bool.isRequired);
+    const wrapper = shallow(<FormContextHandler />);
+    expect(wrapper.instance().getChildContext().test).to.equal(true);
   });
 });

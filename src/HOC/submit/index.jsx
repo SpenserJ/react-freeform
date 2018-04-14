@@ -65,9 +65,9 @@ export default (WrappedComponent) => {
 
     formProps() {
       return {
-        ...(super.formProps()),
+        ...(super.formProps ? super.formProps() : {}),
         onSubmit: this.onSubmitBound,
       };
     }
-  }
-}
+  };
+};

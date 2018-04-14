@@ -15,6 +15,7 @@ export default (WrappedComponent) => {
     static displayName = `handler(${getDisplayName(WrappedComponent)})`;
 
     static childContextTypes = {
+      ...(WrappedComponent.childContextTypes || {}),
       nfGetValue: PropTypes.func.isRequired,
       nfOnChange: PropTypes.func.isRequired,
       nfFullName: PropTypes.func.isRequired,
