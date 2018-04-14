@@ -44,7 +44,7 @@ export default (WrappedComponent) => {
     }
 
     canSubmit() {
-      if (super.canSubmit() === false) { return false; }
+      if (super.canSubmit && super.canSubmit() === false) { return false; }
       return this.state.validationResults.length === 0;
     }
   };
