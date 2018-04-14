@@ -15,7 +15,7 @@ export default handler(class extends React.PureComponent {
     return (
       <React.Fragment>
         <div style={style}>{this.props.children}</div>
-        <pre style={style}>{JSON.stringify(this.state.values)}</pre>
+        <pre style={{ ...style, overflow: 'auto' }}>{JSON.stringify(this.state.values, null, '  ')}</pre>
       </React.Fragment>
     );
   }

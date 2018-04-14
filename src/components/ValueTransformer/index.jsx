@@ -5,7 +5,17 @@ import ValueSubscriber from '../ValueSubscriber/';
 export default class ValueTransformer extends ValueSubscriber {
   static propTypes = {
     ...ValueSubscriber.propTypes,
+    /**
+     * Transform a value back into the submission format
+     * @param {any} value The value as seen by the children
+     * @returns {any} The value as seen by the parents
+     */
     transformOnChange: PropTypes.func.isRequired,
+    /**
+     * Transform a value into a format for rendering
+     * @param {any} value The value as seen by the parents
+     * @returns {any} The value as seen by the children
+     */
     transformValue: PropTypes.func.isRequired,
   }
 
