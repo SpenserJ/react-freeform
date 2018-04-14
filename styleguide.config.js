@@ -17,4 +17,21 @@ module.exports = {
   },
   propsParser: filePath => reactDoc(filePath),
   skipComponentsWithoutExample: true,
+  sections: [
+    {
+      name: 'Introduction',
+      content: 'README.md',
+    },
+    {
+      name: 'Higher Order Components',
+      components: 'src/HOC/**/*.jsx',
+    },
+    {
+      name: 'Form Components',
+      components: 'src/components/**/*.jsx',
+    },
+  ],
+  context: {
+    ExampleForm: path.resolve(__dirname, 'docs/ExampleForm.jsx'),
+  },
 };

@@ -4,8 +4,7 @@ interface, for displaying phone masks, or even converting a group of values into
 a JSON string for submission.
 
 ```js
-const Form = require('../../../examples/wrapper').default;
-<Form defaultValues={{ transform: '{"lookMa":"No JSON here!"}' }}>
+<ExampleForm defaultValues={{ transform: '{"lookMa":"No JSON here!"}' }}>
   <ValueTransformer
     name="transform"
     transformOnChange={value => JSON.stringify(value)}
@@ -13,14 +12,13 @@ const Form = require('../../../examples/wrapper').default;
   >
     <Field name="lookMa" />
   </ValueTransformer>
-</Form>
+</ExampleForm>
 ```
 
 ### Advanced Usage
 
 ```js
-const Form = require('../../../examples/wrapper').default;
-<Form
+<ExampleForm
   defaultValues={{
     transform: [
       { value: 'test', group: '3' },
@@ -69,5 +67,5 @@ const Form = require('../../../examples/wrapper').default;
       ))}
     </WithValue>
   </ValueTransformer>
-</Form>
+</ExampleForm>
 ```

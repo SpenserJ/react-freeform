@@ -11,8 +11,8 @@ necessary.
 
 ```js
 const valid = require('react-freeform/HOC/valid').default;
-const Form = valid(require('../../../examples/wrapper').default);
-<Form defaultValues={{ myField: '', password: '', password2: '', arrayOfRules: -2 }}>
+const ValidForm = valid(ExampleForm);
+<ValidForm defaultValues={{ myField: '', password: '', password2: '', arrayOfRules: -2 }}>
   <Field name="myField" />
   <Validation
     name="myField"
@@ -38,7 +38,7 @@ const Form = valid(require('../../../examples/wrapper').default);
       (value, invalidate) => { if (value < 2) invalidate('Cannot be less than 2'); },
     ]}
   />
-</Form>
+</ValidForm>
 ```
 
 You can wrap any content in the Validation, and if there is a name it will nest
@@ -46,8 +46,8 @@ the children's values. You can also control whether the errors appear before or 
 
 ```js
 const valid = require('react-freeform/HOC/valid').default;
-const Form = valid(require('../../../examples/wrapper').default);
-<Form defaultValues={{ myField: 'Hello World' }}>
+const ValidForm = valid(ExampleForm);
+<ValidForm defaultValues={{ myField: 'Hello World' }}>
   <Validation
     name="myField"
     rules={(value, invalidate) => {
@@ -57,5 +57,5 @@ const Form = valid(require('../../../examples/wrapper').default);
   >
     <Field />
   </Validation>
-</Form>
+</ValidForm>
 ```

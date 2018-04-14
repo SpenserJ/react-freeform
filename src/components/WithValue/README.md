@@ -3,8 +3,7 @@ function. This can be used for mapping an array into a list, primarily for displ
 purposes, or for using onChange to change the values directly.
 
 ```js
-const Form = require('../../../examples/wrapper').default;
-<Form defaultValues={{ myArray: ['a', 'b', 'c'] }}>
+<ExampleForm defaultValues={{ myArray: ['a', 'b', 'c'] }}>
   <WithValue name="myArray">
     {value => (
       <ul>
@@ -12,14 +11,13 @@ const Form = require('../../../examples/wrapper').default;
       </ul>
     )}
   </WithValue>
-</Form>
+</ExampleForm>
 ```
 
 ### Using onChange to add and remove rows
 
 ```js
-const Form = require('../../../examples/wrapper').default;
-<Form defaultValues={{ myArray: ['First', 'Second', 'Third'] }}>
+<ExampleForm defaultValues={{ myArray: ['First', 'Second', 'Third'] }}>
   <WithValue name="myArray">
     {(values, { onChange }) => {
       const arrayFields = values.map((value, i) => (
@@ -42,5 +40,5 @@ const Form = require('../../../examples/wrapper').default;
       );
     }}
   </WithValue>
-</Form>
+</ExampleForm>
 ```
