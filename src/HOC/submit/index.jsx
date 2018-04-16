@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import immutableObject from 'object-path-immutable';
 
-import { getDisplayName } from '../utilities';
+import { getDisplayName } from '../../utilities';
 
 export default (WrappedComponent) => {
   if (!WrappedComponent.prototype.isReactComponent) {
@@ -34,15 +34,30 @@ export default (WrappedComponent) => {
       this.onSubmit();
     };
 
+    /**
+     * Respond to a valid submission being triggered
+     * @param {object} values The form values
+     * @public
+     */
     onSubmit() {
       const values = this.getValue();
       if (super.onSubmit) { super.onSubmit(values); }
     }
 
+    /**
+     * Indicate whether a submission is already in-flight
+     * @returns {bool}
+     * @public
+     */
     isLoading() {
       return super.isLoading ? super.isLoading() : false;
     }
 
+    /**
+     * Indicate whether the form can be submitted
+     * @returns {bool}
+     * @public
+     */
     canSubmit() {
       if (super.canSubmit) { return super.canSubmit(); }
       return !this.isLoading();

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import immutableObject from 'object-path-immutable';
 
-import { getDisplayName } from '../utilities';
+import { getDisplayName } from '../../utilities';
 
 export default (WrappedComponent) => {
   if (!WrappedComponent.prototype.isReactComponent) {
@@ -44,7 +44,7 @@ export default (WrappedComponent) => {
     }
 
     canSubmit() {
-      if (super.canSubmit() === false) { return false; }
+      if (super.canSubmit && super.canSubmit() === false) { return false; }
       return this.state.validationResults.length === 0;
     }
   };

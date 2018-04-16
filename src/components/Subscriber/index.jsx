@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { shallowCompare } from '../utilities';
+import { shallowCompare } from '../../utilities';
 
 export class Subscription {
   constructor(subscriber, onChange) {
@@ -9,7 +9,7 @@ export class Subscription {
     this.updateSubscriber = onChange;
   }
 
-  trySubscribe(/* props */) {
+  trySubscribe() {
     if (!this.subscriber.context || !this.subscriber.context.formSubscription) { return; }
 
     this.tryUnsubscribe();
@@ -41,21 +41,15 @@ export default class Subscriber extends React.Component {
     this.subscription = new Subscription(this, () => this.triggerUpdate());
   }
 
-  triggerUpdate() {
-    this.setState({});
-  }
-
-  componentDidMount() {
-    this.subscription.trySubscribe(this.props);
-  }
+  componentDidMount() { this.subscription.trySubscribe(this.props); }
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(nextProps, this.props) || shallowCompare(nextState, this.state);
   }
 
-  componentWillUnmount() {
-    this.subscription.tryUnsubscribe();
-  }
+  componentWillUnmount() { this.subscription.tryUnsubscribe(); }
+
+  triggerUpdate() { this.setState({}); }
 
   render() {
     return <React.Fragment>{this.props.children}</React.Fragment>;

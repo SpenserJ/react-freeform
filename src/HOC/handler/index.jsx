@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import immutableObject from 'object-path-immutable';
 
-import { getDisplayName } from '../utilities';
+import { getDisplayName } from '../../utilities';
 
 let formIndex = 0;
 
@@ -71,7 +71,7 @@ export default (WrappedComponent) => {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    formProps() { return {}; }
+    formProps() { return super.formProps ? super.formProps() : {}; }
 
     render() {
       const content = super.render ? super.render() : this.props.children;

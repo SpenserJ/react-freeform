@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ValueSubscriber from './ValueSubscriber';
+import ValueSubscriber from '../ValueSubscriber/';
 
 const runValidationRules = (rules, value, invalidate) => {
   if (typeof rules === 'object') {
@@ -24,6 +24,14 @@ const runValidationRules = (rules, value, invalidate) => {
 export default class Validation extends ValueSubscriber {
   static propTypes = {
     ...ValueSubscriber.propTypes,
+    /**
+     * Validation rules can be specified as a single function, an array of functions,
+     * an object of functions, or an object of arrays of functions. Functions will
+     * receive the form values at this level, and objects will return the matching
+     * value for its key.
+     * @param {any} value The value to be validated
+     * @param {function} invalidate A function that may be called with an error string
+     */
     rules: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.arrayOf(PropTypes.func),
@@ -32,6 +40,9 @@ export default class Validation extends ValueSubscriber {
         PropTypes.arrayOf(PropTypes.func),
       ]),
     ]).isRequired,
+    /**
+     * Should error messages be displayed before or after the children
+     */
     displayBeforeChildren: PropTypes.bool,
   };
 
@@ -94,6 +105,10 @@ export default class Validation extends ValueSubscriber {
     this.context.nfUpdateValidation(oldResult, result);
   }
 
+  /**
+   * Override this to change how the validation errors are rendered
+   * @public
+   */
   renderErrors() {
     if (this.state.validationResult.length === 0) { return null; }
     return (

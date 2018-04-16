@@ -47,4 +47,10 @@ npm-shrinkwrap.json
 .env
 
 # Output of compilation
-lib
+/HOC/
+/components/
+/index.js
+/utilities.js
+
+# Documentation for gh-pages
+/styleguide/
