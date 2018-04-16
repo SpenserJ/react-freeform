@@ -27,8 +27,8 @@ const MyForm = valid(submit(handler(MyFormBase)));
     <Field />
   </Validation>
   <br />
-  <CanSubmit>
+  <WithSubmit>
     {({ canSubmit }) => <input type="submit" disabled={!canSubmit} />}
-  </CanSubmit>
+  </WithSubmit>
 </MyForm>
 ```

@@ -25,8 +25,8 @@ const MyForm = submit(handler(MyFormBase));
 <MyForm>
   <Label htmlFor="loading">Loading: <Field name="loading" type="checkbox" /></Label>
   <Label htmlFor="disableSubmit">Disable Submit: <Field name="disableSubmit" type="checkbox" /></Label>
-  <CanSubmit>
+  <WithSubmit>
     {({ canSubmit }) => <input type="submit" disabled={!canSubmit} />}
-  </CanSubmit>
+  </WithSubmit>
 </MyForm>
 ```
