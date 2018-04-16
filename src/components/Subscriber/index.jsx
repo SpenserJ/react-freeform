@@ -10,14 +10,11 @@ export class Subscription {
   }
 
   trySubscribe() {
-    if (!this.subscriber.context || !this.subscriber.context.formSubscription) { return; }
-
     this.tryUnsubscribe();
     this.subscriber.context.formSubscription.subscribe(this.updateSubscriber);
   }
 
   tryUnsubscribe() {
-    if (!this.subscriber.context || !this.subscriber.context.formSubscription) { return; }
     this.subscriber.context.formSubscription.unsubscribe(this.updateSubscriber);
   }
 }

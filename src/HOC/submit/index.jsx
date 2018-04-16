@@ -1,13 +1,10 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import immutableObject from 'object-path-immutable';
+import invariant from 'invariant';
 
 import { getDisplayName } from '../../utilities';
 
 export default (WrappedComponent) => {
-  if (!WrappedComponent.prototype.isReactComponent) {
-    throw 'Cannot extend a pure component';
-  }
+  invariant(WrappedComponent.prototype.isReactComponent, 'Cannot extend a functional component');
 
   return class extends WrappedComponent {
     static displayName = `submit(${getDisplayName(WrappedComponent)})`;
@@ -65,9 +62,9 @@ export default (WrappedComponent) => {
 
     formProps() {
       return {
-        ...(super.formProps()),
+        ...(super.formProps ? super.formProps() : {}),
         onSubmit: this.onSubmitBound,
       };
     }
-  }
-}
+  };
+};

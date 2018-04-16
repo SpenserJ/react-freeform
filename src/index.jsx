@@ -4,7 +4,7 @@ export valid from './HOC/valid/';
 export Field from './components/Field/';
 export ValueSubscriber from './components/ValueSubscriber/';
 export ValueTransformer from './components/ValueTransformer/';
-export CanSubmit from './components/CanSubmit/';
+export WithSubmit from './components/WithSubmit/';
 export Validation from './components/Validation/';
 export WithValue from './components/WithValue/';
 export Label from './components/Label/';
