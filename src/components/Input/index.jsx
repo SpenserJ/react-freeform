@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { fakeChangeEvent } from '../utilities';
+import { fakeChangeEvent } from '../../utilities';
 
 class Input extends React.PureComponent {
   static propTypes = {

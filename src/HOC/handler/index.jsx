@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import immutableObject from 'object-path-immutable';
+import invariant from 'invariant';
 
-import { getDisplayName } from '../utilities';
+import { getDisplayName } from '../../utilities';
 
 let formIndex = 0;
 
 export default (WrappedComponent) => {
-  if (!WrappedComponent.prototype.isReactComponent) {
-    throw 'Cannot extend a pure component';
-  }
+  invariant(WrappedComponent.prototype.isReactComponent, 'Cannot extend a functional component');
 
   return class extends WrappedComponent {
     static displayName = `handler(${getDisplayName(WrappedComponent)})`;
 
     static childContextTypes = {
+      ...(WrappedComponent.childContextTypes || {}),
       nfGetValue: PropTypes.func.isRequired,
       nfOnChange: PropTypes.func.isRequired,
       nfFullName: PropTypes.func.isRequired,
@@ -50,7 +50,7 @@ export default (WrappedComponent) => {
             this.subscriptions = this.subscriptions.filter(v => v !== callback);
           },
         },
-      }
+      };
     }
 
     getDefaults() {
@@ -71,7 +71,7 @@ export default (WrappedComponent) => {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    formProps() { return {}; }
+    formProps() { return super.formProps ? super.formProps() : {}; }
 
     render() {
       const content = super.render ? super.render() : this.props.children;

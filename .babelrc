@@ -9,11 +9,6 @@
     "transform-export-extensions"
   ],
   "env": {
-    "development": {
-      "plugins": [
-        "react-hot-loader/babel"
-      ]
-    },
     "test": {
       "plugins": ["istanbul"]
     }
