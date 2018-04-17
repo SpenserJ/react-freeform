@@ -88,6 +88,14 @@ export default class ValueSubscriber extends Subscriber {
       value = e.target.value; // eslint-disable-line prefer-destructuring
     }
 
+    // Convert to a number if the current value is a number. Inputs only use
+    // string values by default, and this usually introduces some confusion.
+    if (typeof objectPath.get(this.getValue(), name) === 'number') {
+      const parsed = parseInt(value, 10);
+      // Loose equality check to make sure the value still matches
+      if (parsed == value) { value = parsed; } // eslint-disable-line eqeqeq
+    }
+
     // Check to make sure we aren't changing the value's type
     invariantTypesMatch(this.getName().concat(name), objectPath.get(this.getValue(), name), value);
 

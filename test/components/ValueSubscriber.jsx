@@ -152,5 +152,9 @@ describe('components/ValueSubscriber', () => {
     expect(() => changeType({ test: [] }, 'replace array', 'test')).to.throw();
     expect(() => changeType({ test: [] }, 'replace array', ['test'])).to.throw();
     expect(() => changeType({ test: [{}] }, 'replace array', ['test', 0])).to.throw();
+
+    // Allow strings to change to numbers, if the original was a number
+    expect(() => changeType(5, '4')).to.not.throw();
+    expect(() => changeType(5, 'a')).to.throw();
   });
 });
