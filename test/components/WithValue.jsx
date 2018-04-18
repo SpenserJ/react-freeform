@@ -51,8 +51,8 @@ describe('components/WithValue', () => {
     expect(render.args[0][1].onChange).to.be.a('function');
 
     const { onChange } = render.args[0][1];
-    onChange(true);
+    onChange({ a: false });
     expect(nfOnChange.calledOnce).to.equal(true);
-    expect(nfOnChange.args[0][0].target).to.deep.equal({ name: [], value: true });
+    expect(nfOnChange.args[0][0].target).to.deep.equal({ name: [], value: { a: false } });
   });
 });
