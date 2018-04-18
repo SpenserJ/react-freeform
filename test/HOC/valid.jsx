@@ -10,8 +10,7 @@ import valid from 'react-freeform/HOC/valid';
 // Tests for components that this extends or uses
 import './handler';
 
-const defaultValues = { a: true };
-class Test extends React.Component { getDefaults() { return defaultValues; } }
+class Test extends React.Component { getDefaults() { return { a: true }; } }
 
 describe('HOC/valid', () => {
   it('extends class-based components', () => {
