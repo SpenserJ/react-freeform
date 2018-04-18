@@ -92,8 +92,7 @@ export default class ValueSubscriber extends Subscriber {
     // string values by default, and this usually introduces some confusion.
     if (typeof objectPath.get(this.getValue(), name) === 'number') {
       const parsed = parseInt(value, 10);
-      // Loose equality check to make sure the value still matches
-      if (parsed == value) { value = parsed; } // eslint-disable-line eqeqeq
+      if (Number.isInteger(parsed)) { value = parsed; }
     }
 
     // Check to make sure we aren't changing the value's type
