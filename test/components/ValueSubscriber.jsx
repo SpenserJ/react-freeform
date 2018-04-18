@@ -33,24 +33,25 @@ describe('components/ValueSubscriber', () => {
   });
 
   it('uses the name for nesting values and onChange events', () => {
-    const nfOnChange = sinon.spy();
-    const wrapper = shallow(<ValueSubscriber name="d" />, { context: { ...context, nfOnChange } });
-    const component = wrapper.instance();
-    const childContext = component.getChildContext();
-    expect(childContext.nfGetValue()).to.equal(values.d);
+    const testChange = (name, value, onChangeArg, event) => {
+      const nfOnChange = sinon.spy();
+      const wrapper = shallow(<ValueSubscriber name={name} />, { context: { ...context, nfOnChange } });
+      const component = wrapper.instance();
+      const childContext = component.getChildContext();
+      expect(childContext.nfGetValue()).to.equal(value);
 
-    component.onChange({ target: { name: '', value: 'replaced' } });
-    expect(nfOnChange.calledOnce).to.equal(true);
-    expect(nfOnChange.args[0][0].target).to.deep.equal({ name: ['d'], value: 'replaced' });
+      component.onChange(onChangeArg);
+      expect(nfOnChange.calledOnce).to.equal(true);
+      expect(nfOnChange.args[0][0].target).to.deep.equal(event);
+    };
 
-    component.onChange({ target: { name: 'd1', value: 'replaced' } });
-    expect(nfOnChange.calledTwice).to.equal(true);
-    expect(nfOnChange.args[1][0].target).to.deep.equal({ name: ['d', 'd1'], value: 'replaced' });
-
-    // Test only passing a value, instead of a regular event
-    component.onChange({ d1: 'replaced' });
-    expect(nfOnChange.calledThrice).to.equal(true);
-    expect(nfOnChange.args[2][0].target).to.deep.equal({ name: ['d'], value: { d1: 'replaced' } });
+    testChange('a', values.a, { target: { name: '', value: false } }, { name: ['a'], value: false });
+    testChange('a', values.a, false, { name: ['a'], value: false });
+    testChange('b', values.b, { test: true }, { name: ['b'], value: { test: true } });
+    testChange('c', values.c, ['3', '4'], { name: ['c'], value: ['3', '4'] });
+    testChange('c', values.c, { target: { name: '0', value: '5' } }, { name: ['c', '0'], value: '5' });
+    testChange('d', values.d, { d1: 'replaced' }, { name: ['d'], value: { d1: 'replaced' } });
+    testChange('d', values.d, { target: { name: 'd1', value: 'replaced' } }, { name: ['d', 'd1'], value: 'replaced' });
   });
 
   it('handles numbers for accessing array values', () => {
@@ -110,5 +111,50 @@ describe('components/ValueSubscriber', () => {
     expect(getFullName('c', '0', [false, true])).to.deep.equal(['c', '0']);
   });
 
-  it('enforces onChange not altering value types');
+  it('enforces onChange not altering value types', () => {
+    const changeType = (oldVal, newVal, name) =>
+      shallow(<ValueSubscriber />, { context: { ...context, nfGetValue: () => oldVal } })
+        .instance()
+        .onChange({ target: { name, value: newVal } });
+
+    // Same type
+    expect(() => changeType(true, false)).to.not.throw();
+    expect(() => changeType(0, 1)).to.not.throw();
+    expect(() => changeType('a', 'b')).to.not.throw();
+    expect(() => changeType([], [])).to.not.throw();
+    expect(() => changeType({}, {})).to.not.throw();
+
+    // Same type with new type inside
+    expect(() => changeType([], ['test'])).to.not.throw();
+    expect(() => changeType({}, { test: 'test' })).to.not.throw();
+    // Same type with no type inside
+    expect(() => changeType(['test'], [])).to.not.throw();
+    expect(() => changeType({ test: 'test' }, {})).to.not.throw();
+
+    expect(() => changeType(true, 'string')).to.throw();
+    expect(() => changeType('0', 0)).to.throw();
+    expect(() => changeType([], {})).to.throw();
+    expect(() => changeType([], true)).to.throw();
+    expect(() => changeType({}, [])).to.throw();
+    expect(() => changeType({}, true)).to.throw();
+
+    // Same type with different type inside
+    expect(() => changeType(['a'], [true])).to.throw();
+    expect(() => changeType({ test: 'a' }, { test: true })).to.throw();
+
+    // Allow replacing values with null
+    expect(() => changeType([], null)).to.not.throw();
+    expect(() => changeType(['test'], [null])).to.not.throw();
+    expect(() => changeType({}, null)).to.not.throw();
+    expect(() => changeType({ test: 'test' }, { test: null })).to.not.throw();
+
+    // Test name paths
+    expect(() => changeType({ test: [] }, 'replace array', 'test')).to.throw();
+    expect(() => changeType({ test: [] }, 'replace array', ['test'])).to.throw();
+    expect(() => changeType({ test: [{}] }, 'replace array', ['test', 0])).to.throw();
+
+    // Allow strings to change to numbers, if the original was a number
+    expect(() => changeType(5, '4')).to.not.throw();
+    expect(() => changeType(5, 'a')).to.throw();
+  });
 });
