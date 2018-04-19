@@ -19,10 +19,10 @@ const values = {
 
 const noop = () => {};
 const context = {
-  nfOnChange: noop,
-  nfUpdateValidation: noop,
-  nfGetValue: () => values,
-  nfFullName: () => ([]),
+  ffOnChange: noop,
+  ffUpdateValidation: noop,
+  ffGetValue: () => values,
+  ffFullName: () => ([]),
   formSubscription: { subscribe: noop, unsubscribe: noop },
 };
 
@@ -90,12 +90,12 @@ describe('components/runValidationRules', () => {
 
 describe('components/Validation', () => {
   it('should run validation when mounting', () => {
-    const nfUpdateValidation = sinon.spy();
+    const ffUpdateValidation = sinon.spy();
     const rule = sinon.spy((_, invalidate) => invalidate('test'));
-    shallow(<Validation rules={rule} />, { context: { ...context, nfUpdateValidation } });
+    shallow(<Validation rules={rule} />, { context: { ...context, ffUpdateValidation } });
     expect(rule.calledOnce).to.equal(true);
-    expect(nfUpdateValidation.calledOnce).to.equal(true);
-    expect(nfUpdateValidation.calledWith([], [[[], 'test']])).to.equal(true);
+    expect(ffUpdateValidation.calledOnce).to.equal(true);
+    expect(ffUpdateValidation.calledWith([], [[[], 'test']])).to.equal(true);
   });
 
   it('should run validation after an update has been triggered', () => {
@@ -104,7 +104,7 @@ describe('components/Validation', () => {
     const rule = sinon.spy((_, invalidate) => (rule.calledTwice ? invalidate('test') : false));
     const componentContext = {
       ...context,
-      nfUpdateValidation: sinon.spy(),
+      ffUpdateValidation: sinon.spy(),
       formSubscription: {
         subscribe: (func) => { triggerUpdate = func; },
         unsubscribe: noop,
@@ -112,12 +112,12 @@ describe('components/Validation', () => {
     };
     shallow(<Validation rules={rule} />, { context: componentContext });
     expect(rule.calledOnce).to.equal(true);
-    expect(componentContext.nfUpdateValidation.calledOnce).to.equal(false);
+    expect(componentContext.ffUpdateValidation.calledOnce).to.equal(false);
 
     triggerUpdate();
     expect(rule.calledTwice).to.equal(true);
-    expect(componentContext.nfUpdateValidation.calledOnce).to.equal(true);
-    expect(componentContext.nfUpdateValidation.calledWith([], [[[], 'test']])).to.equal(true);
+    expect(componentContext.ffUpdateValidation.calledOnce).to.equal(true);
+    expect(componentContext.ffUpdateValidation.calledWith([], [[[], 'test']])).to.equal(true);
   });
 
   it('should only send updates if validation results change', () => {
@@ -127,7 +127,7 @@ describe('components/Validation', () => {
     const rule = sinon.spy((_, invalidate) => (error ? invalidate(error) : false));
     const componentContext = {
       ...context,
-      nfUpdateValidation: sinon.spy(),
+      ffUpdateValidation: sinon.spy(),
       formSubscription: {
         subscribe: (func) => { triggerUpdate = func; },
         unsubscribe: noop,
@@ -136,34 +136,34 @@ describe('components/Validation', () => {
     // No errors on first render
     shallow(<Validation rules={rule} />, { context: componentContext });
     expect(rule.calledOnce).to.equal(true);
-    expect(componentContext.nfUpdateValidation.calledOnce).to.equal(false);
+    expect(componentContext.ffUpdateValidation.calledOnce).to.equal(false);
 
     // No errors on second render
     triggerUpdate();
     expect(rule.calledTwice).to.equal(true);
-    expect(componentContext.nfUpdateValidation.calledOnce).to.equal(false);
+    expect(componentContext.ffUpdateValidation.calledOnce).to.equal(false);
 
     // Errors on third render
     error = 'Error';
     triggerUpdate();
     expect(rule.calledThrice).to.equal(true);
-    expect(componentContext.nfUpdateValidation.calledOnce).to.equal(true);
-    expect(componentContext.nfUpdateValidation.calledWith([], [[[], 'Error']])).to.equal(true);
+    expect(componentContext.ffUpdateValidation.calledOnce).to.equal(true);
+    expect(componentContext.ffUpdateValidation.calledWith([], [[[], 'Error']])).to.equal(true);
   });
 
   it('should remove validation when unmounting', () => {
     const rule = sinon.spy((_, invalidate) => invalidate('test'));
-    const componentContext = { ...context, nfUpdateValidation: sinon.spy() };
+    const componentContext = { ...context, ffUpdateValidation: sinon.spy() };
     const wrapper = shallow(<Validation rules={rule} />, { context: componentContext });
     expect(rule.calledOnce).to.equal(true);
-    expect(componentContext.nfUpdateValidation.calledOnce).to.equal(true);
-    expect(componentContext.nfUpdateValidation.calledWith([], [[[], 'test']])).to.equal(true);
+    expect(componentContext.ffUpdateValidation.calledOnce).to.equal(true);
+    expect(componentContext.ffUpdateValidation.calledWith([], [[[], 'test']])).to.equal(true);
 
     wrapper.unmount();
 
     expect(rule.calledTwice).to.equal(false);
-    expect(componentContext.nfUpdateValidation.calledTwice).to.equal(true);
-    expect(componentContext.nfUpdateValidation.calledWith([[[], 'test']], []))
+    expect(componentContext.ffUpdateValidation.calledTwice).to.equal(true);
+    expect(componentContext.ffUpdateValidation.calledWith([[[], 'test']], []))
       .to.equal(true, 'Validation was not cleared before unmount');
   });
 
@@ -185,7 +185,7 @@ describe('components/Validation', () => {
     rules = makeRule('change message');
     wrapper.setProps({ rules });
     // TODO: Triggering the update and render here instead of from the
-    // nfUpdateValidation context, and it needs to be cleaned up
+    // ffUpdateValidation context, and it needs to be cleaned up
     triggerUpdate();
     wrapper.update();
     expect(wrapper.find('li').length).to.equal(1);
@@ -195,7 +195,7 @@ describe('components/Validation', () => {
     rules = [rules, makeRule('error')];
     wrapper.setProps({ rules });
     // TODO: Triggering the update and render here instead of from the
-    // nfUpdateValidation context, and it needs to be cleaned up
+    // ffUpdateValidation context, and it needs to be cleaned up
     triggerUpdate();
     wrapper.update();
     expect(wrapper.find('li').length).to.equal(2);

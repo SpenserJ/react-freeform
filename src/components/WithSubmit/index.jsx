@@ -15,8 +15,8 @@ export default class WithSubmit extends Subscriber {
 
   static contextTypes = {
     ...Subscriber.contextTypes,
-    nfIsLoading: PropTypes.func.isRequired,
-    nfCanSubmit: PropTypes.func.isRequired,
+    ffIsLoading: PropTypes.func.isRequired,
+    ffCanSubmit: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -27,21 +27,21 @@ export default class WithSubmit extends Subscriber {
 
   componentDidMount() {
     super.componentDidMount();
-    this.oldIsLoading = this.context.nfIsLoading();
-    this.oldCanSubmit = this.context.nfCanSubmit();
+    this.oldIsLoading = this.context.ffIsLoading();
+    this.oldCanSubmit = this.context.ffCanSubmit();
   }
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
     if (super.shouldComponentUpdate(nextProps, nextState, nextContext)) { return true; }
     let shouldUpdate = false;
 
-    const newIsLoading = this.context.nfIsLoading();
+    const newIsLoading = this.context.ffIsLoading();
     if (newIsLoading !== this.oldIsLoading) {
       this.oldIsLoading = newIsLoading;
       shouldUpdate = true;
     }
 
-    const newCanSubmit = this.context.nfCanSubmit();
+    const newCanSubmit = this.context.ffCanSubmit();
     if (newCanSubmit !== this.oldCanSubmit) {
       this.oldCanSubmit = newCanSubmit;
       shouldUpdate = true;
@@ -52,8 +52,8 @@ export default class WithSubmit extends Subscriber {
 
   render() {
     return this.props.children({
-      isLoading: this.context.nfIsLoading(),
-      canSubmit: this.context.nfCanSubmit(),
+      isLoading: this.context.ffIsLoading(),
+      canSubmit: this.context.ffCanSubmit(),
     }) || null;
   }
 }

@@ -39,17 +39,17 @@ describe('HOC/handler', () => {
 
     let expectedVal = defaultValues;
     expect(wrapper.state().values).to.deep.equal(defaultValues);
-    expect(instance.getChildContext().nfGetValue()).to.deep.equal(defaultValues);
+    expect(instance.getChildContext().ffGetValue()).to.deep.equal(defaultValues);
 
     expectedVal = { ...expectedVal, a: false };
     instance.onChange(({ target: { name: 'a', value: false } }));
     expect(wrapper.state().values).to.deep.equal(expectedVal);
-    expect(instance.getChildContext().nfGetValue()).to.deep.equal(expectedVal);
+    expect(instance.getChildContext().ffGetValue()).to.deep.equal(expectedVal);
 
     instance.onChange(({ target: { name: ['d', 'd1'], value: 'updated' } }));
     expectedVal = { ...expectedVal, d: { d1: 'updated' } };
     expect(wrapper.state().values).to.deep.equal(expectedVal);
-    expect(instance.getChildContext().nfGetValue()).to.deep.equal(expectedVal);
+    expect(instance.getChildContext().ffGetValue()).to.deep.equal(expectedVal);
   });
 
   it('creates a form tag automatically', () => {
@@ -102,6 +102,6 @@ describe('HOC/handler', () => {
   it('sets default name', () => {
     const DefaultHandler = handler(TestWithDefaults);
     const context = shallow(<DefaultHandler />).instance().getChildContext();
-    expect(context.nfFullName()).to.deep.equal([]);
+    expect(context.ffFullName()).to.deep.equal([]);
   });
 });

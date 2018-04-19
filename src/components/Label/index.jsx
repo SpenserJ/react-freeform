@@ -29,8 +29,8 @@ export default class Label extends React.PureComponent {
   };
 
   static contextTypes = {
-    nfFullName: PropTypes.func.isRequired,
-    nfFormIndex: PropTypes.number.isRequired,
+    ffFullName: PropTypes.func.isRequired,
+    ffFormIndex: PropTypes.number.isRequired,
   };
 
   render() {
@@ -43,7 +43,7 @@ export default class Label extends React.PureComponent {
     return (
       <Component
         {...restProps}
-        htmlFor={[this.context.nfFormIndex].concat(this.context.nfFullName(), htmlFor).join('.')}
+        htmlFor={[this.context.ffFormIndex].concat(this.context.ffFullName(), htmlFor).join('.')}
       >
         {children}
       </Component>

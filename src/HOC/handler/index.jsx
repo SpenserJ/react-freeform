@@ -15,10 +15,10 @@ export default (WrappedComponent) => {
 
     static childContextTypes = {
       ...(WrappedComponent.childContextTypes || {}),
-      nfGetValue: PropTypes.func.isRequired,
-      nfOnChange: PropTypes.func.isRequired,
-      nfFullName: PropTypes.func.isRequired,
-      nfFormIndex: PropTypes.number.isRequired,
+      ffGetValue: PropTypes.func.isRequired,
+      ffOnChange: PropTypes.func.isRequired,
+      ffFullName: PropTypes.func.isRequired,
+      ffFormIndex: PropTypes.number.isRequired,
       formSubscription: PropTypes.objectOf(PropTypes.func).isRequired,
     };
 
@@ -40,10 +40,10 @@ export default (WrappedComponent) => {
         : {};
       return {
         ...superChildContext,
-        nfGetValue: this.getValue,
-        nfOnChange: this.onChange,
-        nfFullName: () => ([]),
-        nfFormIndex: this.formIndex,
+        ffGetValue: this.getValue,
+        ffOnChange: this.onChange,
+        ffFullName: () => ([]),
+        ffFormIndex: this.formIndex,
         formSubscription: {
           subscribe: callback => this.subscriptions.push(callback),
           unsubscribe: (callback) => {

@@ -53,7 +53,7 @@ export default class Validation extends ValueSubscriber {
 
   static contextTypes = {
     ...ValueSubscriber.contextTypes,
-    nfUpdateValidation: PropTypes.func.isRequired,
+    ffUpdateValidation: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -76,7 +76,7 @@ export default class Validation extends ValueSubscriber {
 
   componentWillUnmount() {
     super.componentWillUnmount();
-    this.context.nfUpdateValidation(this.state.validationResult, []);
+    this.context.ffUpdateValidation(this.state.validationResult, []);
   }
 
   // TODO: If the rules prop changes, revalidate
@@ -107,7 +107,7 @@ export default class Validation extends ValueSubscriber {
 
     const oldResult = this.state.validationResult;
     this.setState({ validationResult: result });
-    this.context.nfUpdateValidation(oldResult, result);
+    this.context.ffUpdateValidation(oldResult, result);
   }
 
   /**

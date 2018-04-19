@@ -19,9 +19,9 @@ const values = {
 
 const noop = () => {};
 const context = {
-  nfOnChange: noop,
-  nfGetValue: () => values,
-  nfFullName: () => ([]),
+  ffOnChange: noop,
+  ffGetValue: () => values,
+  ffFullName: () => ([]),
   formSubscription: { subscribe: noop, unsubscribe: noop },
 };
 
@@ -29,20 +29,20 @@ describe('components/ValueSubscriber', () => {
   it('provides access to the form values without a name', () => {
     const wrapper = shallow(<ValueSubscriber />, { context });
     const component = wrapper.instance();
-    expect(component.getChildContext().nfGetValue()).to.equal(values);
+    expect(component.getChildContext().ffGetValue()).to.equal(values);
   });
 
   it('uses the name for nesting values and onChange events', () => {
     const testChange = (name, value, onChangeArg, event) => {
-      const nfOnChange = sinon.spy();
-      const wrapper = shallow(<ValueSubscriber name={name} />, { context: { ...context, nfOnChange } });
+      const ffOnChange = sinon.spy();
+      const wrapper = shallow(<ValueSubscriber name={name} />, { context: { ...context, ffOnChange } });
       const component = wrapper.instance();
       const childContext = component.getChildContext();
-      expect(childContext.nfGetValue()).to.equal(value);
+      expect(childContext.ffGetValue()).to.equal(value);
 
       component.onChange(onChangeArg);
-      expect(nfOnChange.calledOnce).to.equal(true);
-      expect(nfOnChange.args[0][0].target).to.deep.equal(event);
+      expect(ffOnChange.calledOnce).to.equal(true);
+      expect(ffOnChange.args[0][0].target).to.deep.equal(event);
     };
 
     testChange('a', values.a, { target: { name: '', value: false } }, { name: ['a'], value: false });
@@ -55,22 +55,22 @@ describe('components/ValueSubscriber', () => {
   });
 
   it('handles numbers for accessing array values', () => {
-    const nfOnChange = sinon.spy();
+    const ffOnChange = sinon.spy();
     const wrapper = shallow(<ValueSubscriber name="0" />, {
-      context: { ...context, nfOnChange, nfGetValue: () => values.c },
+      context: { ...context, ffOnChange, ffGetValue: () => values.c },
     });
     const component = wrapper.instance();
     expect(component.getValue()).to.equal(values.c[0]);
 
     component.onChange('replaced');
-    expect(nfOnChange.calledOnce).to.equal(true);
-    expect(nfOnChange.args[0][0].target).to.deep.equal({ name: ['0'], value: 'replaced' });
+    expect(ffOnChange.calledOnce).to.equal(true);
+    expect(ffOnChange.args[0][0].target).to.deep.equal({ name: ['0'], value: 'replaced' });
   });
 
   it('only rerenders when the value changes, or props/state change', () => {
     let testValue = values;
     const wrapper = mount(<ValueSubscriber />, {
-      context: { ...context, nfGetValue: () => testValue },
+      context: { ...context, ffGetValue: () => testValue },
     });
     const shouldUpdateSpy = sinon.spy(wrapper.instance(), 'shouldComponentUpdate');
 
@@ -100,11 +100,11 @@ describe('components/ValueSubscriber', () => {
       .to.throw('"thisKeyIsMissing" must have a value. Please check the handler\'s getDefaults() method.');
   });
 
-  it('nests context.nfFullName()', () => {
+  it('nests context.ffFullName()', () => {
     const getFullName = (name, childName, val = values) => shallow(
       <ValueSubscriber name={childName} />,
-      { context: { ...context, nfFullName: () => [].concat(name), nfGetValue: () => val } },
-    ).instance().getChildContext().nfFullName();
+      { context: { ...context, ffFullName: () => [].concat(name), ffGetValue: () => val } },
+    ).instance().getChildContext().ffFullName();
 
     expect(getFullName('d')).to.deep.equal(['d']);
     expect(getFullName('d', 'd1', { d1: true })).to.deep.equal(['d', 'd1']);
@@ -113,7 +113,7 @@ describe('components/ValueSubscriber', () => {
 
   it('enforces onChange not altering value types', () => {
     const changeType = (oldVal, newVal, name) =>
-      shallow(<ValueSubscriber />, { context: { ...context, nfGetValue: () => oldVal } })
+      shallow(<ValueSubscriber />, { context: { ...context, ffGetValue: () => oldVal } })
         .instance()
         .onChange({ target: { name, value: newVal } });
 
