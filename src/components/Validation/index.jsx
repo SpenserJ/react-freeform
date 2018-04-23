@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 import ValueSubscriber from '../ValueSubscriber/';
 
-const runValidationRules = (rules, value, invalidate) => {
+export const runValidationRules = (rules, value, invalidate) => {
   if (typeof rules === 'object') {
     if (Array.isArray(rules)) {
       rules.forEach(rule => runValidationRules(rule, value, invalidate));
     } else {
-      Object.entries(rules).forEach(([key, rule]) => {
+      Object.keys(rules).forEach((key) => {
         runValidationRules(
-          rule,
+          rules[key],
           value[key],
           (error, nestedName = []) => invalidate(error, [key].concat(nestedName)),
         );
@@ -53,7 +53,7 @@ export default class Validation extends ValueSubscriber {
 
   static contextTypes = {
     ...ValueSubscriber.contextTypes,
-    nfUpdateValidation: PropTypes.func.isRequired,
+    ffUpdateValidation: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -72,6 +72,11 @@ export default class Validation extends ValueSubscriber {
   componentDidMount() {
     super.componentDidMount();
     this.runValidation();
+  }
+
+  componentWillUnmount() {
+    super.componentWillUnmount();
+    this.context.ffUpdateValidation(this.state.validationResult, []);
   }
 
   // TODO: If the rules prop changes, revalidate
@@ -102,7 +107,7 @@ export default class Validation extends ValueSubscriber {
 
     const oldResult = this.state.validationResult;
     this.setState({ validationResult: result });
-    this.context.nfUpdateValidation(oldResult, result);
+    this.context.ffUpdateValidation(oldResult, result);
   }
 
   /**
@@ -114,7 +119,7 @@ export default class Validation extends ValueSubscriber {
     return (
       <ul>
         {/* eslint-disable-next-line react/no-array-index-key */}
-        {this.state.validationResult.map((v, i) => <li key={i}>{v}</li>)}
+        {this.state.validationResult.map((v, i) => <li key={i}>{v[1]}</li>)}
       </ul>
     );
   }

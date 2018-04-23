@@ -51,14 +51,14 @@ export default class ValueSubscriber extends Subscriber {
 
   static contextTypes = {
     ...Subscriber.contextTypes,
-    nfGetValue: PropTypes.func.isRequired,
-    nfOnChange: PropTypes.func.isRequired,
-    nfFullName: PropTypes.func.isRequired,
+    ffGetValue: PropTypes.func.isRequired,
+    ffOnChange: PropTypes.func.isRequired,
+    ffFullName: PropTypes.func.isRequired,
   };
 
   static childContextTypes = {
-    nfGetValue: PropTypes.func.isRequired,
-    nfFullName: PropTypes.func.isRequired,
+    ffGetValue: PropTypes.func.isRequired,
+    ffFullName: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -68,8 +68,8 @@ export default class ValueSubscriber extends Subscriber {
 
   getChildContext() {
     return {
-      nfGetValue: () => this.getValue(),
-      nfFullName: this.getName,
+      ffGetValue: () => this.getValue(),
+      ffFullName: this.getName,
     };
   }
 
@@ -98,7 +98,7 @@ export default class ValueSubscriber extends Subscriber {
     // Check to make sure we aren't changing the value's type
     invariantTypesMatch(this.getName().concat(name), objectPath.get(this.getValue(), name), value);
 
-    this.context.nfOnChange(fakeChangeEvent(this.getName().concat(name), value));
+    this.context.ffOnChange(fakeChangeEvent(this.getName().concat(name), value));
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -120,7 +120,7 @@ export default class ValueSubscriber extends Subscriber {
    */
   getValue() {
     const hasName = (typeof this.props.name !== 'undefined' && this.props.name !== '');
-    const value = this.context.nfGetValue();
+    const value = this.context.ffGetValue();
     invariant(
       typeof value !== 'undefined' && (!hasName || typeof value[this.props.name] !== 'undefined'),
       `"${this.getName().join('.')}" must have a value. Please check the handler's getDefaults() method.`,
@@ -134,7 +134,7 @@ export default class ValueSubscriber extends Subscriber {
    * @public
    */
   getName = () => {
-    const parentName = this.context.nfFullName();
+    const parentName = this.context.ffFullName();
     if (typeof this.props.name === 'undefined' || this.props.name === '') { return parentName; }
     return parentName.concat(this.props.name);
   };

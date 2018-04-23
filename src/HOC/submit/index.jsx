@@ -11,8 +11,8 @@ export default (WrappedComponent) => {
 
     static childContextTypes = {
       ...(WrappedComponent.childContextTypes || {}),
-      nfIsLoading: PropTypes.func.isRequired,
-      nfCanSubmit: PropTypes.func.isRequired,
+      ffIsLoading: PropTypes.func.isRequired,
+      ffCanSubmit: PropTypes.func.isRequired,
     }
 
     getChildContext() {
@@ -21,8 +21,8 @@ export default (WrappedComponent) => {
         : {};
       return {
         ...superChildContext,
-        nfIsLoading: () => this.isLoading(),
-        nfCanSubmit: () => this.canSubmit(),
+        ffIsLoading: () => this.isLoading(),
+        ffCanSubmit: () => this.canSubmit(),
       };
     }
 

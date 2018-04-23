@@ -76,10 +76,9 @@
       "./test/test_helper.js"
     ],
     "exclude": [
-      "docs",
-      "storybook",
       "HOC",
-      "components"
+      "components",
+      "styleguide"
     ],
     "include": [
       "src/**/*.{js,jsx}"

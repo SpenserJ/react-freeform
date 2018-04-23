@@ -21,13 +21,13 @@ export default class ValueTransformer extends ValueSubscriber {
 
   static childContextTypes = {
     ...ValueSubscriber.childContextTypes,
-    nfOnChange: PropTypes.func.isRequired,
+    ffOnChange: PropTypes.func.isRequired,
   }
 
   getChildContext() {
     return {
       ...super.getChildContext(),
-      nfOnChange: e => this.onChange(e),
+      ffOnChange: e => this.onChange(e),
     };
   }
 

@@ -28,7 +28,7 @@ export default class Field extends ValueSubscriber {
 
   static contextTypes = {
     ...ValueSubscriber.contextTypes,
-    nfFormIndex: PropTypes.number.isRequired,
+    ffFormIndex: PropTypes.number.isRequired,
   }
 
   getOtherProps() {
@@ -50,7 +50,7 @@ export default class Field extends ValueSubscriber {
       onChange: this.boundOnChange,
       value: this.getValue(),
       'data-name': this.getName().join('.'),
-      id: `${this.context.nfFormIndex}.${this.getName().join('.')}`,
+      id: `${this.context.ffFormIndex}.${this.getName().join('.')}`,
     };
     if (typeof otherProps.value !== 'undefined') {
       fieldProps['data-value'] = fieldProps.value;

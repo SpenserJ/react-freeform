@@ -39,35 +39,35 @@ describe('HOC/valid', () => {
   it('adds and removes validation arrays when called, and blocks sumbit accordingly', () => {
     const TestHandler = valid(handler(Test));
     const component = shallow(<TestHandler />).instance();
-    const { nfUpdateValidation } = component.getChildContext();
+    const { ffUpdateValidation } = component.getChildContext();
 
     expect(component.state.validationResults.length).to.equal(0);
 
     // Handles initial mount
-    nfUpdateValidation(undefined, []);
+    ffUpdateValidation(undefined, []);
     expect(component.state.validationResults.length).to.equal(0);
 
-    nfUpdateValidation([], []);
+    ffUpdateValidation([], []);
     expect(component.state.validationResults.length).to.equal(0);
 
     const validationResult = ['Error'];
-    nfUpdateValidation([], validationResult);
+    ffUpdateValidation([], validationResult);
     expect(component.state.validationResults.length).to.equal(1);
     // Shouldn't be able to submit the form with validation errors
     expect(component.canSubmit()).to.equal(false);
 
     // Test other components triggering their own validation
-    nfUpdateValidation([], []);
+    ffUpdateValidation([], []);
     expect(component.state.validationResults.length).to.equal(1);
     const otherValidationResult = ['Another error'];
-    nfUpdateValidation([], otherValidationResult);
+    ffUpdateValidation([], otherValidationResult);
     expect(component.state.validationResults.length).to.equal(2);
     expect(component.canSubmit()).to.equal(false);
 
     // Begin clearing errors
-    nfUpdateValidation(validationResult, []);
+    ffUpdateValidation(validationResult, []);
     expect(component.state.validationResults.length).to.equal(1);
-    nfUpdateValidation(otherValidationResult, []);
+    ffUpdateValidation(otherValidationResult, []);
     expect(component.state.validationResults.length).to.equal(0);
     expect(component.canSubmit()).to.equal(true);
   });

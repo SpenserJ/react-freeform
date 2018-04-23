@@ -28,22 +28,22 @@ describe('HOC/submit', () => {
   it('supports isLoading() and canSubmit()', () => {
     const DefaultHandler = submit(handler(Test));
     const childContext = shallow(<DefaultHandler />).instance().getChildContext();
-    expect(childContext.nfCanSubmit()).to.equal(true);
-    expect(childContext.nfIsLoading()).to.equal(false);
+    expect(childContext.ffCanSubmit()).to.equal(true);
+    expect(childContext.ffIsLoading()).to.equal(false);
 
     const SubmitHandler = submit(handler(class extends Test {
       canSubmit() { return false; }
     }));
     const childContext2 = shallow(<SubmitHandler />).instance().getChildContext();
-    expect(childContext2.nfCanSubmit()).to.equal(false);
-    expect(childContext2.nfIsLoading()).to.equal(false);
+    expect(childContext2.ffCanSubmit()).to.equal(false);
+    expect(childContext2.ffIsLoading()).to.equal(false);
 
     const LoadingHandler = submit(handler(class extends Test {
       isLoading() { return true; }
     }));
     const childContext3 = shallow(<LoadingHandler />).instance().getChildContext();
-    expect(childContext3.nfCanSubmit()).to.equal(false);
-    expect(childContext3.nfIsLoading()).to.equal(true);
+    expect(childContext3.ffCanSubmit()).to.equal(false);
+    expect(childContext3.ffIsLoading()).to.equal(true);
   });
 
   it('adds onSubmit to the formProps()', () => {

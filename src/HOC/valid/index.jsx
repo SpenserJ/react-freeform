@@ -11,7 +11,7 @@ export default (WrappedComponent) => {
 
     static childContextTypes = {
       ...(WrappedComponent.childContextTypes || {}),
-      nfUpdateValidation: PropTypes.func.isRequired,
+      ffUpdateValidation: PropTypes.func.isRequired,
     }
 
     constructor(props, context) {
@@ -29,7 +29,7 @@ export default (WrappedComponent) => {
         : {};
       return {
         ...superChildContext,
-        nfUpdateValidation: this.updateValidation,
+        ffUpdateValidation: this.updateValidation,
       };
     }
 

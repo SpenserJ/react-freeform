@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
@@ -20,9 +19,9 @@ const values = {
 
 const noop = () => {};
 const context = {
-  nfGetValue: () => values,
-  nfFullName: () => ([]),
-  nfOnChange: noop,
+  ffGetValue: () => values,
+  ffFullName: () => ([]),
+  ffOnChange: noop,
   formSubscription: { subscribe: noop, unsubscribe: noop },
 };
 
@@ -44,15 +43,15 @@ describe('components/WithValue', () => {
 
   it('should pass a working onChange into the render function', () => {
     const render = sinon.spy(() => null);
-    const nfOnChange = sinon.spy();
+    const ffOnChange = sinon.spy();
 
-    shallow(<WithValue>{render}</WithValue>, { context: { ...context, nfOnChange } });
+    shallow(<WithValue>{render}</WithValue>, { context: { ...context, ffOnChange } });
     expect(render.args[0][1]).to.be.an('object');
     expect(render.args[0][1].onChange).to.be.a('function');
 
     const { onChange } = render.args[0][1];
     onChange({ a: false });
-    expect(nfOnChange.calledOnce).to.equal(true);
-    expect(nfOnChange.args[0][0].target).to.deep.equal({ name: [], value: { a: false } });
+    expect(ffOnChange.calledOnce).to.equal(true);
+    expect(ffOnChange.args[0][0].target).to.deep.equal({ name: [], value: { a: false } });
   });
 });
