@@ -62,6 +62,8 @@ export default class Validation extends ValueSubscriber {
       ...this.state,
       validationResult: [],
     };
+    // setState may fire asynchronously, so we need to track the state with a property for rapid updates.
+    this.dirtyValidationResult = [];
   }
 
   triggerUpdate() {
@@ -90,12 +92,12 @@ export default class Validation extends ValueSubscriber {
     runValidationRules(this.props.rules, value, invalidate);
 
     // Check validation results for differences
-    if (this.state.validationResult.length === result.length) {
+    if (this.dirtyValidationResult.length === result.length) {
       let validationChanged = false;
       let i = 0;
       while (validationChanged === false && i < result.length) {
         const newVal = result[i];
-        const oldVal = this.state.validationResult[i];
+        const oldVal = this.dirtyValidationResult[i];
         if (newVal[0].join('|') !== oldVal[0].join('|') || newVal[1] !== oldVal[1]) {
           validationChanged = true;
         }
@@ -105,7 +107,9 @@ export default class Validation extends ValueSubscriber {
       if (validationChanged === false) { return; }
     }
 
-    const oldResult = this.state.validationResult;
+    const oldResult = this.dirtyValidationResult;
+    // Track the new validation outside of the state, to prevent async race conditions
+    this.dirtyValidationResult = result;
     this.setState({ validationResult: result });
     this.context.ffUpdateValidation(oldResult, result);
   }
