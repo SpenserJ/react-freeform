@@ -21,4 +21,4 @@ class ExampleForm extends React.PureComponent {
   }
 }
 
-module.exports = handler(ExampleForm);
+export default handler(ExampleForm);

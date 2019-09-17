@@ -1,5 +1,4 @@
 const path = require('path');
-const reactDoc = require('library-utils/react-doc');
 
 module.exports = {
   components: 'src/**/*.jsx',
@@ -31,7 +30,6 @@ module.exports = {
       : componentSourcesFileName;
     return `import ${componentName} from 'react-freeform/${importPath}';`;
   },
-  propsParser: filePath => reactDoc(filePath),
   skipComponentsWithoutExample: true,
   sections: [
     {
@@ -55,7 +53,7 @@ module.exports = {
     url: 'https://github.com/SpenserJ/react-freeform',
     text: 'Fork me on GitHub',
   },
-  showCode: true,
-  showUsage: true,
+  exampleMode: 'expand',
+  usageMode: 'expand',
   title: 'React Freeform',
 };
