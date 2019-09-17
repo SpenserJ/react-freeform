@@ -6,7 +6,10 @@ import Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() });
 
-const { window } = new JSDOM('<!doctype html><html><body></body></html>');
+const { window } = new JSDOM(
+  '<!doctype html><html><body></body></html>',
+  { url: 'http://localhost' },
+);
 
 global.document = window.document;
 global.window = window;
