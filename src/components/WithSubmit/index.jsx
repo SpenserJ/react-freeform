@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import Subscriber from '../Subscriber/';
+import Subscriber from '../Subscriber';
 
 export default class WithSubmit extends Subscriber {
   static propTypes = {

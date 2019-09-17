@@ -3,7 +3,7 @@ import invariant from 'invariant';
 import objectPath from 'object-path';
 
 import { fakeChangeEvent } from '../../utilities';
-import Subscriber from '../Subscriber/';
+import Subscriber from '../Subscriber';
 
 const invariantTypesMatch = (name, oldVal, newVal) => {
   let changingType = false;

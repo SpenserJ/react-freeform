@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ValueSubscriber from '../ValueSubscriber/';
+import ValueSubscriber from '../ValueSubscriber';
 
 export default class WithValue extends ValueSubscriber {
   static propTypes = {

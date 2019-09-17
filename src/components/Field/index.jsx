@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ValueSubscriber from '../ValueSubscriber/';
-import Input from '../Input/';
+import ValueSubscriber from '../ValueSubscriber';
+import Input from '../Input';
 
 export default class Field extends ValueSubscriber {
   static propTypes = {

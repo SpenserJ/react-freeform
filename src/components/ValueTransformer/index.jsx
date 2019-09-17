@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import immutableObject from 'object-path-immutable';
-import ValueSubscriber from '../ValueSubscriber/';
+import ValueSubscriber from '../ValueSubscriber';
 
 export default class ValueTransformer extends ValueSubscriber {
   static propTypes = {

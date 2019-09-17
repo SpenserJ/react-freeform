@@ -60,11 +60,10 @@ export default (WrappedComponent) => {
 
     getValue = () => this.state.values;
 
-    onChange = (e) => {
-      this.setState({
-        values: immutableObject.set(this.state.values, e.target.name, e.target.value),
-      }, () => this.triggerUpdate());
-    }
+    onChange = e => this.setState(
+      ({ values }) => ({ values: immutableObject.set(values, e.target.name, e.target.value) }),
+      () => this.triggerUpdate(),
+    );
 
     triggerUpdate() {
       this.subscriptions.forEach(callback => callback());

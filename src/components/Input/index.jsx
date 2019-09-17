@@ -18,6 +18,7 @@ class Input extends React.PureComponent {
   };
 
   onCheckboxChange = e => this.props.onChange(fakeChangeEvent(e.target.name, e.target.checked));
+
   // Ignore the name for radios, since we need them for radio groups
   onRadioChange = e => this.props.onChange(e.target.value);
 

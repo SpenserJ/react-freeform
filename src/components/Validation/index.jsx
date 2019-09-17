@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ValueSubscriber from '../ValueSubscriber/';
+import ValueSubscriber from '../ValueSubscriber';
 
 export const runValidationRules = (rules, value, invalidate) => {
   if (typeof rules === 'object') {
