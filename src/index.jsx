@@ -1,11 +1,25 @@
-export handler from './HOC/handler/';
-export submit from './HOC/submit/';
-export valid from './HOC/valid/';
-export Field from './components/Field/';
-export ValueSubscriber from './components/ValueSubscriber/';
-export ValueTransformer from './components/ValueTransformer/';
-export WithSubmit from './components/WithSubmit/';
-export Validation from './components/Validation/';
-export WithValue from './components/WithValue/';
-export Label from './components/Label/';
-export { fakeChangeEvent } from './utilities';
+import handler from './HOC/handler';
+import submit from './HOC/submit';
+import valid from './HOC/valid';
+import Field from './components/Field';
+import ValueSubscriber from './components/ValueSubscriber';
+import ValueTransformer from './components/ValueTransformer';
+import WithSubmit from './components/WithSubmit';
+import Validation from './components/Validation';
+import WithValue from './components/WithValue';
+import Label from './components/Label';
+import { fakeChangeEvent } from './utilities';
+
+export {
+  handler,
+  submit,
+  valid,
+  Field,
+  ValueSubscriber,
+  ValueTransformer,
+  WithSubmit,
+  Validation,
+  WithValue,
+  Label,
+  fakeChangeEvent,
+};
