@@ -4,11 +4,8 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import handler from 'react-freeform/HOC/handler';
-import submit from 'react-freeform/HOC/submit';
-
-// Tests for components that this extends or uses
-import './handler';
+import handler from '../handler';
+import submit from '.';
 
 const defaultValues = { a: true };
 class Test extends React.Component { getDefaults() { return defaultValues; } }

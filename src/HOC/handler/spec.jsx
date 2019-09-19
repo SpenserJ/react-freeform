@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import handler from 'react-freeform/HOC/handler';
+import handler from '.';
 
 class Test extends React.Component {}
 

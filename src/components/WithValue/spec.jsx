@@ -1,12 +1,8 @@
 import React from 'react';
-import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import WithValue from 'react-freeform/components/WithValue';
-
-// Tests for components that this extends or uses
-import './ValueSubscriber';
+import WithValue from '.';
 
 const values = {
   a: true,
@@ -26,32 +22,32 @@ const context = {
 };
 
 describe('components/WithValue', () => {
-  it('should render the result of the render function', () => {
+  test('should render the result of the render function', () => {
     const wrapper = shallow(<WithValue>{() => <h1>Test</h1>}</WithValue>, { context });
-    expect(wrapper.find('h1').length).to.equal(1);
+    expect(wrapper.find('h1').length).toBe(1);
   });
 
-  it('should pass the value into the render function', () => {
+  test('should pass the value into the render function', () => {
     const render = sinon.spy(() => null);
 
     shallow(<WithValue>{render}</WithValue>, { context });
-    expect(render.args[0][0]).to.deep.equal(values);
+    expect(render.args[0][0]).toEqual(values);
 
     shallow(<WithValue name="c">{render}</WithValue>, { context });
-    expect(render.args[1][0]).to.deep.equal(values.c);
+    expect(render.args[1][0]).toEqual(values.c);
   });
 
-  it('should pass a working onChange into the render function', () => {
+  test('should pass a working onChange into the render function', () => {
     const render = sinon.spy(() => null);
     const ffOnChange = sinon.spy();
 
     shallow(<WithValue>{render}</WithValue>, { context: { ...context, ffOnChange } });
-    expect(render.args[0][1]).to.be.an('object');
-    expect(render.args[0][1].onChange).to.be.a('function');
+    expect(typeof render.args[0][1]).toBe('object');
+    expect(typeof render.args[0][1].onChange).toBe('function');
 
     const { onChange } = render.args[0][1];
     onChange({ a: false });
-    expect(ffOnChange.calledOnce).to.equal(true);
-    expect(ffOnChange.args[0][0].target).to.deep.equal({ name: [], value: { a: false } });
+    expect(ffOnChange.calledOnce).toBe(true);
+    expect(ffOnChange.args[0][0].target).toEqual({ name: [], value: { a: false } });
   });
 });
