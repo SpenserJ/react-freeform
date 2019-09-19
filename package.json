@@ -7,7 +7,6 @@
     "lint": "eslint src --ext .jsx --ext .js",
     "clean:lib": "rimraf ./HOC/* && rimraf ./components/*",
     "compile:lib": "babel src --out-dir .",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "npm run clean:lib && npm run compile:lib",
     "test": "cross-env NODE_ENV=test jest",
     "preversion": "npm run build && npm run test",

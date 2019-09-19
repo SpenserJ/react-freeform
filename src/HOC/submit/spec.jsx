@@ -68,6 +68,7 @@ describe('HOC/submit', () => {
   it('retains childContext', () => {
     const FormContextHandler = submit(handler(class extends Test {
       static childContextTypes = { test: PropTypes.bool.isRequired };
+
       getChildContext() { return { test: true }; }
     }));
     expect(FormContextHandler.childContextTypes.test).to.equal(PropTypes.bool.isRequired);

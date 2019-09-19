@@ -3,6 +3,10 @@ import handler from '../handler';
 import submit from '.';
 
 class MyFormBase extends React.PureComponent {
+  onSubmit(values) {
+    alert(`Submitted values:\n${JSON.stringify(values, null, '  ')}`);
+  }
+
   getDefaults() {
     return {
       loading: false,
@@ -11,10 +15,8 @@ class MyFormBase extends React.PureComponent {
   }
 
   isLoading() { return this.state.values.loading; }
+
   canSubmit() { return !(this.isLoading() || this.state.values.disableSubmit); }
-  onSubmit(values) {
-    alert(`Submitted values:\n${JSON.stringify(values, null, '  ')}`);
-  }
 }
 
 export default submit(handler(MyFormBase));

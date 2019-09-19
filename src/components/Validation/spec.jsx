@@ -58,7 +58,7 @@ describe('components/runValidationRules', () => {
 
       expect(invalidateSpy.calledOnce).toBe(true);
       expect(invalidateSpy.calledWith('Test', ['c'])).toBe(true);
-    }
+    },
   );
 
   test('should support arrays and objects nested in objects', () => {

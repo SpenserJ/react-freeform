@@ -4,6 +4,7 @@ import submit from '../../HOC/submit';
 
 class BaseForm extends React.Component {
   getDefaults() { return { submitToggle: false }; }
+
   canSubmit() { return this.state.values.submitToggle; }
 }
 

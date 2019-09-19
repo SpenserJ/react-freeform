@@ -31,7 +31,10 @@ describe('components/ValueSubscriber', () => {
   test('uses the name for nesting values and onChange events', () => {
     const testChange = (name, value, onChangeArg, event) => {
       const ffOnChange = sinon.spy();
-      const wrapper = shallow(<ValueSubscriber name={name} />, { context: { ...context, ffOnChange } });
+      const wrapper = shallow(
+        <ValueSubscriber name={name} />,
+        { context: { ...context, ffOnChange } },
+      );
       const component = wrapper.instance();
       const childContext = component.getChildContext();
       expect(childContext.ffGetValue()).toBe(value);
@@ -93,7 +96,7 @@ describe('components/ValueSubscriber', () => {
 
   test('should throw an invariant when fetching a missing value', () => {
     expect(() => shallow(<ValueSubscriber name="thisKeyIsMissing" />, { context })).toThrowError(
-      '"thisKeyIsMissing" must have a value. Please check the handler\'s getDefaults() method.'
+      '"thisKeyIsMissing" must have a value. Please check the handler\'s getDefaults() method.',
     );
   });
 
@@ -109,10 +112,12 @@ describe('components/ValueSubscriber', () => {
   });
 
   test('enforces onChange not altering value types', () => {
-    const changeType = (oldVal, newVal, name) =>
-      shallow(<ValueSubscriber />, { context: { ...context, ffGetValue: () => oldVal } })
-        .instance()
-        .onChange({ target: { name, value: newVal } });
+    const changeType = (oldVal, newVal, name) => shallow(
+      <ValueSubscriber />,
+      { context: { ...context, ffGetValue: () => oldVal } },
+    )
+      .instance()
+      .onChange({ target: { name, value: newVal } });
 
     // Same type
     expect(() => changeType(true, false)).not.toThrowError();

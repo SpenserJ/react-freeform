@@ -28,7 +28,7 @@ class MyStyledFormBase extends MyFormBase {
   formProps() {
     return {
       style: { background: '#ccc', padding: '20px' },
-    }
+    };
   }
 }
 export const MyStyledForm = handler(MyStyledFormBase);

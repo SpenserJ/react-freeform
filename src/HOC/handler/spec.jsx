@@ -6,6 +6,7 @@ import sinon from 'sinon';
 
 import handler from '.';
 
+// eslint-disable-next-line react/prefer-stateless-function
 class Test extends React.Component {}
 
 const defaultValues = {
@@ -19,10 +20,6 @@ const defaultValues = {
 
 class TestWithDefaults extends Test {
   getDefaults() { return defaultValues; }
-}
-
-class TestWithFormProps extends Test {
-  formProps() { return { 'data-myProp': true }; }
 }
 
 describe('HOC/handler', () => {
@@ -70,6 +67,7 @@ describe('HOC/handler', () => {
   it('retains childContext', () => {
     const FormContextHandler = handler(class extends Test {
       static childContextTypes = { test: PropTypes.bool.isRequired };
+
       getChildContext() { return { test: true }; }
     });
     expect(FormContextHandler.childContextTypes.test).to.equal(PropTypes.bool.isRequired);

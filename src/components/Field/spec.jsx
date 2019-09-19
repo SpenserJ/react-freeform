@@ -44,7 +44,7 @@ describe('components/Field', () => {
       const input = wrapper.find('input');
       expect(input.props()).toHaveProperty('value', 'test');
       expect(input.props()).toHaveProperty('data-value', true);
-    }
+    },
   );
 
   test('should pass data-name as a string of the entire form path', () => {
@@ -63,7 +63,7 @@ describe('components/Field', () => {
         <Field value="test" name="d1" />,
         { context: { ...context, ffFullName: () => (['d']), ffGetValue: () => ({ d1: 'test' }) } },
       ).find('input').props()).toHaveProperty('id', '1.d.d1');
-    }
+    },
   );
 
   test('should pass a working onChange into the input', () => {

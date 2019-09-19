@@ -2,7 +2,7 @@ import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 
 import Label from '.';
 import Field from '../Field';
-import * as Examples from './docs.examples';
+import FancyLabel from './docs.examples';
 import ExampleForm from '../../../docs/ExampleForm';
 
 <Meta title="Components|Label" component={Label} />
@@ -35,7 +35,7 @@ const FancyLabel = props => (
 <Preview>
   <Story name="component">
     <ExampleForm defaultValues={{ myField: 'Hello world' }}>
-      <Label htmlFor="myField" component={Examples.FancyLabel}>My Field's Label</Label>
+      <Label htmlFor="myField" component={FancyLabel}>My Field's Label</Label>
       <Field name="myField" />
     </ExampleForm>
   </Story>

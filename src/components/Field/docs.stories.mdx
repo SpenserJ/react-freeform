@@ -1,7 +1,7 @@
 import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 
 import Field from '.';
-import * as Examples from './docs.examples';
+import MySelect from './docs.examples';
 import ExampleForm from '../../../docs/ExampleForm';
 
 <Meta title="Components|Field" component={Field} />
@@ -47,7 +47,7 @@ const MySelect = ({ multiplier, ...props }) => (
 <Preview>
   <Story name="Custom component">
     <ExampleForm defaultValues={{ myField: 6 }}>
-      <Field name="myField" component={Examples.MySelect} multiplier={3} />
+      <Field name="myField" component={MySelect} multiplier={3} />
     </ExampleForm>
   </Story>
 </Preview>

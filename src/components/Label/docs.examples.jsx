@@ -1,5 +1,12 @@
 import React from 'react';
 
-export const FancyLabel = props => (
-  <label {...props}><div style={{ border: '1px dotted' }}>{props.children}</div></label>
+const FancyLabel = props => (
+  // eslint-disable-next-line jsx-a11y/label-has-associated-control
+  <label {...props}>
+    <div style={{ border: '1px dotted' }}>
+      {props.children}
+    </div>
+  </label>
 );
+
+export default FancyLabel;
