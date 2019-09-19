@@ -2,35 +2,8 @@ import PropTypes from 'prop-types';
 import invariant from 'invariant';
 import objectPath from 'object-path';
 
-import { fakeChangeEvent } from '../../utilities';
+import { fakeChangeEvent, invariantTypesMatch } from '../../utilities';
 import Subscriber from '../Subscriber';
-
-const invariantTypesMatch = (name, oldVal, newVal) => {
-  let changingType = false;
-  if (oldVal === null || newVal === null || typeof oldVal === 'undefined' || typeof newVal === 'undefined') { return; }
-  if (typeof oldVal === 'object') {
-    if (oldVal && newVal) {
-      const c = 'constructor'; // Shorthand for constructor
-      changingType = (oldVal[c] && newVal[c] && oldVal[c] === newVal[c])
-        ? false
-        : `Cannot convert between two object types: ${oldVal.constructor} !== ${newVal.constructor}`;
-      if (changingType === false) {
-        // Compare child values
-        if (oldVal.constructor === ({}).constructor) {
-          Object.keys(oldVal)
-            .forEach(key => invariantTypesMatch(name.concat(key), oldVal[key], newVal[key]));
-        } else if (Array.isArray(oldVal)) {
-          oldVal.forEach((_, i) => invariantTypesMatch(name.concat(i), oldVal[i], newVal[i]));
-        }
-      }
-    }
-  } else {
-    changingType = (typeof oldVal !== typeof newVal)
-      ? `Cannot convert ${name.join('.')} from ${typeof oldVal} to ${typeof newVal}`
-      : false;
-  }
-  invariant(!changingType, changingType);
-};
 
 export default class ValueSubscriber extends Subscriber {
   static propTypes = {
@@ -96,9 +69,13 @@ export default class ValueSubscriber extends Subscriber {
     }
 
     // Check to make sure we aren't changing the value's type
-    invariantTypesMatch(this.getName().concat(name), objectPath.get(this.getValue(), name), value);
+    this.invariantTypesMatch(name, value);
 
     this.context.ffOnChange(fakeChangeEvent(this.getName().concat(name), value));
+  }
+
+  invariantTypesMatch(name, value) {
+    invariantTypesMatch(this.getName().concat(name), objectPath.get(this.getValue(), name), value);
   }
 
   shouldComponentUpdate(nextProps, nextState) {

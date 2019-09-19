@@ -1,0 +1,38 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+
+import ValueSubscriber from '.';
+import JSONValue from './docs.examples';
+import Field from '../Field';
+import ExampleForm from '../../../docs/ExampleForm';
+
+<Meta title="Components|ValueSubscriber" component={ValueSubscriber} />
+
+# ValueSubscriber
+
+<Props of={ValueSubscriber} />
+
+The `ValueSubscriber` is the base component of most others, however it may also
+be used to nest form values.
+
+<Preview>
+  <Story name="default">
+    <ExampleForm defaultValues={{ nested: { values: 'Hello world' } }}>
+      <ValueSubscriber name="nested">
+        <Field name="values" />
+      </ValueSubscriber>
+    </ExampleForm>
+  </Story>
+</Preview>
+
+It can be easily extended for custom functionality, such as debugging form values
+
+<Preview>
+  <Story name="extended">
+    <ExampleForm defaultValues={{ nested: { values: 'Hello world' } }}>
+      <h4>Top Level</h4>
+      <JSONValue />
+      <h4>Nested</h4>
+      <JSONValue name="nested" />
+    </ExampleForm>
+  </Story>
+</Preview>

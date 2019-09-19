@@ -132,11 +132,11 @@ export default class Validation extends ValueSubscriber {
     const { displayBeforeChildren } = this.props;
     const children = super.render();
     return (
-      <React.Fragment>
+      <>
         {displayBeforeChildren ? null : children}
         {this.renderErrors()}
         {displayBeforeChildren ? children : null}
-      </React.Fragment>
+      </>
     );
   }
 }

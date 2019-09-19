@@ -16,11 +16,11 @@ export default class WithValue extends ValueSubscriber {
 
   render() {
     return (
-      <React.Fragment>{this.props.children(
+      <>{this.props.children(
         this.getValue(),
         { onChange: e => this.onChange(e) },
       )}
-      </React.Fragment>
+      </>
     );
   }
 }

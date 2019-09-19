@@ -26,7 +26,7 @@ can work with any input field available, often out of the box.
 
 React Freeform requires **React 16.0 or later**.
 
-```shell static
+```shell
 npm install --save react-freeform
 ```
 

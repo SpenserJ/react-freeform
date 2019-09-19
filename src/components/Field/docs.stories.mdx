@@ -1,0 +1,53 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+
+import Field from '.';
+import * as Examples from './docs.examples';
+import ExampleForm from '../../../docs/ExampleForm';
+
+<Meta title="Components|Field" component={Field} />
+
+# Field
+
+<Props of={Field} />
+
+By default, the `Field` will render a text input.
+
+<Preview>
+  <Story name="default">
+    <ExampleForm defaultValues={{ myField: 'Hello world' }}>
+      <Field name="myField" />
+    </ExampleForm>
+  </Story>
+</Preview>
+
+Properties other than name and onChange will be passed to the underlying component. This allows you to set the input's `type` to any valid HTML5 value, or set attributes on the input, such as min and max.
+
+<Preview>
+  <Story name="passthru">
+    <ExampleForm defaultValues={{ checkboxExample: true, numberExample: 2 }}>
+      <Field name="checkboxExample" type="checkbox" />
+      <Field name="numberExample" type="number" min="0" max="5" />
+    </ExampleForm>
+  </Story>
+</Preview>
+
+If you want to use something other than an `<input>`, you can pass a string or component into the `component` property.
+
+```jsx
+const MySelect = ({ multiplier, ...props }) => (
+  <select {...props}>
+    <option>{1 * multiplier}</option>
+    <option>{2 * multiplier}</option>
+    <option>{3 * multiplier}</option>
+    <option>{4 * multiplier}</option>
+  </select>
+);
+```
+
+<Preview>
+  <Story name="Custom component">
+    <ExampleForm defaultValues={{ myField: 6 }}>
+      <Field name="myField" component={Examples.MySelect} multiplier={3} />
+    </ExampleForm>
+  </Story>
+</Preview>

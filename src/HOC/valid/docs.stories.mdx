@@ -1,0 +1,48 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import MyForm from './docs.examples';
+import Validation from '../../components/Validation';
+import Field from '../..//components/Field';
+import WithSubmit from '../..//components/WithSubmit';
+
+<Meta title="HOC|valid" />
+
+# valid
+
+The `valid` higher-order-component handles all of the logic for the `Validation`
+component, and will set `canSubmit` from the `submit` HOC to false if any
+validation fails.
+
+```jsx
+import handler from 'react-freeform/HOC/handler/';
+import submit from 'react-freeform/HOC/submit/';
+import valid from 'react-freeform/HOC/valid/';
+
+class MyFormBase extends React.PureComponent {
+  getDefaults() {
+    return { myField: '' };
+  }
+
+  onSubmit(values) {
+    alert(`Submitted values:\n${JSON.stringify(values, null, '  ')}`);
+  }
+}
+
+const MyForm = valid(submit(handler(MyFormBase)));
+```
+
+<Preview>
+  <Story name="default">
+    <MyForm>
+      <Validation
+        name="myField"
+        rules={(value, invalidate) => { if (!value) invalidate('Cannot be empty'); }}
+      >
+        <Field />
+      </Validation>
+      <br />
+      <WithSubmit>
+        {({ canSubmit }) => <input type="submit" disabled={!canSubmit} />}
+      </WithSubmit>
+    </MyForm>
+  </Story>
+</Preview>

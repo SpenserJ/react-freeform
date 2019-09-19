@@ -50,6 +50,6 @@ export default class Subscriber extends React.Component {
   triggerUpdate() { this.setState({}); }
 
   render() {
-    return <React.Fragment>{this.props.children}</React.Fragment>;
+    return <>{this.props.children}</>;
   }
 }

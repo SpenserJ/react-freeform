@@ -1,0 +1,37 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+
+import WithSubmit from '.';
+import SubmitForm from './docs.examples';
+import Field from '../Field';
+
+<Meta title="Components|WithSubmit" component={WithSubmit} />
+
+# WithSubmit
+
+<Props of={WithSubmit} />
+
+`WithSubmit` may be used to gather information on the status of the form. This is most
+often used to disable a submit button based on the validation or loading status. It
+requires that the form has been wrapped in the `submit` HOC.
+
+```jsx
+class BaseForm extends React.Component {
+  getDefaults() { return { submitToggle: false }; }
+  canSubmit() { return this.state.values.submitToggle; }
+}
+
+const SubmitForm = submit(handler(BaseForm));
+```
+
+<Preview>
+  <Story name="default">
+    <SubmitForm>
+      <Field name="submitToggle" type="checkbox" />
+      <WithSubmit>
+        {({ canSubmit, isLoading }) => (
+          <input type="submit" value="Submit" disabled={!canSubmit || isLoading} />
+        )}
+      </WithSubmit>
+    </SubmitForm>
+  </Story>
+</Preview>

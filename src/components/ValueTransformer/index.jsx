@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import immutableObject from 'object-path-immutable';
+import objectPath from 'object-path';
 import ValueSubscriber from '../ValueSubscriber';
+import { invariantTypesMatch } from '../../utilities';
 
 export default class ValueTransformer extends ValueSubscriber {
   static propTypes = {
@@ -41,6 +43,11 @@ export default class ValueTransformer extends ValueSubscriber {
   getValue() {
     const value = super.getValue();
     return this.props.transformValue(value);
+  }
+
+  invariantTypesMatch(name, value) {
+    // Use super.getValue() instead of this.getValue() because we don't want it transformed
+    invariantTypesMatch(this.getName().concat(name), objectPath.get(super.getValue(), name), value);
   }
 
   // Super render for supporting react-docgen

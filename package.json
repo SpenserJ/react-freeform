@@ -14,9 +14,9 @@
     "test:single": "NODE_ENV=test mocha --require @babel/register --require test/test_helper.js --recursive",
     "preversion": "npm run build && npm run test",
     "postpublish": "npm run docs:deploy",
-    "docs:dev": "npx styleguidist server",
-    "docs:build": "npx styleguidist build",
-    "docs:deploy": "npm run docs:build && gh-pages --dist styleguide"
+    "docs:dev": "start-storybook -p 6006",
+    "docs:build": "build-storybook --docs",
+    "docs:deploy": "npm run docs:build && gh-pages --dist storybook-static"
   },
   "repository": {
     "type": "git",
@@ -32,9 +32,13 @@
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
     "@babel/register": "^7.6.0",
+    "@storybook/addon-actions": "^5.2.1",
+    "@storybook/addon-docs": "^5.3.0-alpha.0",
+    "@storybook/addon-links": "^5.2.1",
+    "@storybook/addons": "^5.2.1",
+    "@storybook/react": "^5.2.1",
     "@vizworx/babel-preset": "^1.0.1",
     "@vizworx/eslint-config-react": "^1.1.0",
-    "acorn": "^7.0.0",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-istanbul": "^5.2.0",
@@ -50,7 +54,6 @@
     "nyc": "^14.1.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-styleguidist": "^9.1.16",
     "rimraf": "^3.0.0",
     "sinon": "^7.4.2",
     "webpack": "^4.40.2"
@@ -73,7 +76,7 @@
     "exclude": [
       "HOC",
       "components",
-      "styleguide"
+      "storybook-static"
     ],
     "include": [
       "src/**/*.{js,jsx}"

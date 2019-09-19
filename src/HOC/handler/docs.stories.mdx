@@ -1,0 +1,90 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { MyForm, MyRenderedForm, MyStyledForm } from './docs.examples';
+import Field from '../../components/Field';
+
+<Meta title="HOC|handler" />
+
+# handler
+
+The `handler` higher-order-component is at the core of Freeform, and handles tracking values and triggering renders of the appropriate components. The only requirements are that you use a class, and that you have a `getDefaults()` method that returns an object of default values.
+
+```jsx static
+import handler from 'react-freeform/HOC/handler';
+
+class MyFormBase extends React.PureComponent {
+  getDefaults() {
+    return {
+      some: 'Hello',
+      fields: 'World',
+    };
+  }
+}
+
+export default handler(MyFormBase);
+```
+
+## Rendering content
+
+Any children provided to this component will be rendered as part of the form.
+
+<Preview>
+  <Story name="default">
+    <MyForm>
+      <Field name="some" />
+      <Field name="fields" />
+    </MyForm>
+  </Story>
+</Preview>
+
+You can also use the `render()` method to output the children.
+
+```jsx
+import handler from 'react-freeform/HOC/handler';
+import Field from 'react-freeform/components/Field';
+
+class MyRenderedFormBase extends MyFormBase {
+  render() {
+    return (
+      <>
+        <Field name="some" />
+        <Field name="fields" />
+      </>
+    );
+  }
+}
+const MyRenderedForm = handler(MyFormBase);
+```
+
+<Preview>
+  <Story name="render()">
+    <MyRenderedForm />
+  </Story>
+</Preview>
+
+
+## formProps()
+
+`formProps()` should return an object of props to spread onto the main `<form>`
+
+```jsx
+import handler from 'react-freeform/HOC/handler';
+
+class MyStyledFormBase extends MyFormBase {
+  formProps() {
+    return {
+      style: { background: '#ccc', padding: '20px' },
+    }
+  }
+}
+
+const MyStyledForm = handler(MyStyledFormBase);
+```
+
+<Preview>
+  <Story name="formProps()">
+    <MyStyledForm>
+      <Field name="some" />
+      <Field name="fields" />
+    </MyStyledForm>
+  </Story>
+</Preview>

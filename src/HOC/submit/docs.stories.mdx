@@ -1,0 +1,52 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import MyForm from './docs.examples';
+import Label from '../../components/Label';
+import Field from '../..//components/Field';
+import WithSubmit from '../..//components/WithSubmit';
+
+<Meta title="HOC|submit" />
+
+# submit
+
+The `submit` higher-order-component provides a simple interface for managing
+form submissions, loading indicators, and blocking form submissions for any reason.
+
+```jsx
+import handler from 'react-freeform/HOC/handler';
+import submit from 'react-freeform/HOC/submit';
+
+class MyFormBase extends React.PureComponent {
+  getDefaults() {
+    return {
+      loading: false,
+      disableSubmit: false,
+    };
+  }
+
+  isLoading() { return this.state.values.loading; }
+  canSubmit() { return !(this.isLoading() || this.state.values.disableSubmit); }
+  onSubmit(values) {
+    alert(`Submitted values:\n${JSON.stringify(values, null, '  ')}`);
+  }
+}
+
+const MyForm = submit(handler(MyFormBase));
+```
+
+<Preview>
+  <Story name="default">
+    <MyForm>
+      <Label htmlFor="loading">
+        Loading: <Field name="loading" type="checkbox" />
+      </Label>
+      <br />
+      <Label htmlFor="disableSubmit">
+        Disable Submit: <Field name="disableSubmit" type="checkbox" />
+      </Label>
+      <br />
+      <WithSubmit>
+        {({ canSubmit }) => <input type="submit" disabled={!canSubmit} />}
+      </WithSubmit>
+    </MyForm>
+  </Story>
+</Preview>
