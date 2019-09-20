@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 
 import Field from '.';
 
@@ -67,10 +66,10 @@ describe('components/Field', () => {
   );
 
   test('should pass a working onChange into the input', () => {
-    const ffOnChange = sinon.spy();
+    const ffOnChange = jest.fn();
     const input = mount(<Field name="a" />, { context: { ...context, ffOnChange } }).find('input');
     input.simulate('change', { target: { name: '', value: false } });
-    expect(ffOnChange.calledOnce).toBe(true);
-    expect(ffOnChange.args[0][0].target).toEqual({ name: ['a'], value: false });
+    expect(ffOnChange).toHaveBeenCalledTimes(1);
+    expect(ffOnChange.mock.calls[0][0].target).toEqual({ name: ['a'], value: false });
   });
 });

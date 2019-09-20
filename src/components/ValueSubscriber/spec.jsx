@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 
 import ValueSubscriber from '.';
 
@@ -30,7 +29,7 @@ describe('components/ValueSubscriber', () => {
 
   test('uses the name for nesting values and onChange events', () => {
     const testChange = (name, value, onChangeArg, event) => {
-      const ffOnChange = sinon.spy();
+      const ffOnChange = jest.fn();
       const wrapper = shallow(
         <ValueSubscriber name={name} />,
         { context: { ...context, ffOnChange } },
@@ -40,8 +39,8 @@ describe('components/ValueSubscriber', () => {
       expect(childContext.ffGetValue()).toBe(value);
 
       component.onChange(onChangeArg);
-      expect(ffOnChange.calledOnce).toBe(true);
-      expect(ffOnChange.args[0][0].target).toEqual(event);
+      expect(ffOnChange).toHaveBeenCalledTimes(1);
+      expect(ffOnChange.mock.calls[0][0].target).toEqual(event);
     };
 
     testChange('a', values.a, { target: { name: '', value: false } }, { name: ['a'], value: false });
@@ -54,7 +53,7 @@ describe('components/ValueSubscriber', () => {
   });
 
   test('handles numbers for accessing array values', () => {
-    const ffOnChange = sinon.spy();
+    const ffOnChange = jest.fn();
     const wrapper = shallow(<ValueSubscriber name="0" />, {
       context: { ...context, ffOnChange, ffGetValue: () => values.c },
     });
@@ -62,8 +61,8 @@ describe('components/ValueSubscriber', () => {
     expect(component.getValue()).toBe(values.c[0]);
 
     component.onChange('replaced');
-    expect(ffOnChange.calledOnce).toBe(true);
-    expect(ffOnChange.args[0][0].target).toEqual({ name: ['0'], value: 'replaced' });
+    expect(ffOnChange).toHaveBeenCalledTimes(1);
+    expect(ffOnChange.mock.calls[0][0].target).toEqual({ name: ['0'], value: 'replaced' });
   });
 
   test('only rerenders when the value changes, or props/state change', () => {
@@ -71,27 +70,25 @@ describe('components/ValueSubscriber', () => {
     const wrapper = mount(<ValueSubscriber />, {
       context: { ...context, ffGetValue: () => testValue },
     });
-    const shouldUpdateSpy = sinon.spy(wrapper.instance(), 'shouldComponentUpdate');
+    const shouldUpdateSpy = jest.spyOn(wrapper.instance(), 'shouldComponentUpdate');
 
-    expect(shouldUpdateSpy.called).toBe(false);
+    expect(shouldUpdateSpy).not.toHaveBeenCalled();
 
     wrapper.setProps({});
-    expect(shouldUpdateSpy.returnValues[0]).toBe(false);
+    expect(shouldUpdateSpy).toHaveLastReturnedWith(false);
 
     wrapper.setState({});
-    expect(shouldUpdateSpy.returnValues[1]).toBe(false);
+    expect(shouldUpdateSpy).toHaveLastReturnedWith(false);
 
     wrapper.setProps({ 'data-test': true });
-    expect(shouldUpdateSpy.returnValues[2]).toBe(true);
+    expect(shouldUpdateSpy).toHaveLastReturnedWith(true);
 
     wrapper.setState({ test: true });
-    expect(shouldUpdateSpy.returnValues[3]).toBe(true);
+    expect(shouldUpdateSpy).toHaveLastReturnedWith(true);
 
     testValue = { ...testValue, a: false };
     wrapper.setState({});
-    expect(shouldUpdateSpy.returnValues[4]).toBe(true);
-
-    shouldUpdateSpy.restore();
+    expect(shouldUpdateSpy).toHaveLastReturnedWith(true);
   });
 
   test('should throw an invariant when fetching a missing value', () => {

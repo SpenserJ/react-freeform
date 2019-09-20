@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 
 import handler from '.';
 
@@ -25,8 +23,8 @@ class TestWithDefaults extends Test {
 describe('HOC/handler', () => {
   it('extends class-based components', () => {
     const TestHandler = handler(Test);
-    expect(TestHandler.displayName).to.equal('handler(Test)');
-    expect(() => { handler(() => {}); }).to.throw('Cannot extend a functional component');
+    expect(TestHandler.displayName).toBe('handler(Test)');
+    expect(() => { handler(() => {}); }).toThrow('Cannot extend a functional component');
   });
 
   it('updates the state when receiving an onChange', () => {
@@ -35,24 +33,24 @@ describe('HOC/handler', () => {
     const instance = wrapper.instance();
 
     let expectedVal = defaultValues;
-    expect(wrapper.state().values).to.deep.equal(defaultValues);
-    expect(instance.getChildContext().ffGetValue()).to.deep.equal(defaultValues);
+    expect(wrapper.state().values).toEqual(defaultValues);
+    expect(instance.getChildContext().ffGetValue()).toEqual(defaultValues);
 
     expectedVal = { ...expectedVal, a: false };
     instance.onChange(({ target: { name: 'a', value: false } }));
-    expect(wrapper.state().values).to.deep.equal(expectedVal);
-    expect(instance.getChildContext().ffGetValue()).to.deep.equal(expectedVal);
+    expect(wrapper.state().values).toEqual(expectedVal);
+    expect(instance.getChildContext().ffGetValue()).toEqual(expectedVal);
 
     instance.onChange(({ target: { name: ['d', 'd1'], value: 'updated' } }));
     expectedVal = { ...expectedVal, d: { d1: 'updated' } };
-    expect(wrapper.state().values).to.deep.equal(expectedVal);
-    expect(instance.getChildContext().ffGetValue()).to.deep.equal(expectedVal);
+    expect(wrapper.state().values).toEqual(expectedVal);
+    expect(instance.getChildContext().ffGetValue()).toEqual(expectedVal);
   });
 
   it('creates a form tag automatically', () => {
     const FormHandler = handler(Test);
     const wrapper = shallow(<FormHandler />);
-    expect(wrapper.type()).to.equal('form');
+    expect(wrapper.type()).toBe('form');
   });
 
   it('adds formProps() to the form', () => {
@@ -60,8 +58,8 @@ describe('HOC/handler', () => {
       formProps() { return { 'data-myProp': true }; }
     });
     const wrapper = shallow(<FormPropsHandler />);
-    expect(wrapper.type()).to.equal('form');
-    expect(wrapper.find('form').props()['data-myProp']).to.equal(true);
+    expect(wrapper.type()).toBe('form');
+    expect(wrapper.find('form').props()['data-myProp']).toBe(true);
   });
 
   it('retains childContext', () => {
@@ -70,9 +68,9 @@ describe('HOC/handler', () => {
 
       getChildContext() { return { test: true }; }
     });
-    expect(FormContextHandler.childContextTypes.test).to.equal(PropTypes.bool.isRequired);
+    expect(FormContextHandler.childContextTypes.test).toBe(PropTypes.bool.isRequired);
     const wrapper = shallow(<FormContextHandler />);
-    expect(wrapper.instance().getChildContext().test).to.equal(true);
+    expect(wrapper.instance().getChildContext().test).toBe(true);
   });
 
   it('supports wrapped render', () => {
@@ -80,26 +78,26 @@ describe('HOC/handler', () => {
       render() { return <pre>{this.props.children}</pre>; }
     });
     const wrapper = shallow(<FormRenderHandler />);
-    expect(wrapper.find('pre').exists()).to.equal(true);
+    expect(wrapper.find('pre').exists()).toBe(true);
   });
 
   it('tracks form subscriptions', () => {
     const TestHandler = handler(Test);
     const instance = shallow(<TestHandler />).instance();
     const context = instance.getChildContext();
-    const updateCallback = sinon.spy();
+    const updateCallback = jest.fn();
     context.formSubscription.subscribe(updateCallback);
-    expect(updateCallback.called).to.equal(false);
+    expect(updateCallback).not.toHaveBeenCalled();
     instance.triggerUpdate();
-    expect(updateCallback.calledOnce).to.equal(true);
+    expect(updateCallback).toHaveBeenCalledTimes(1);
     context.formSubscription.unsubscribe(updateCallback);
     instance.triggerUpdate();
-    expect(updateCallback.calledOnce).to.equal(true);
+    expect(updateCallback).toHaveBeenCalledTimes(1);
   });
 
   it('sets default name', () => {
     const DefaultHandler = handler(TestWithDefaults);
     const context = shallow(<DefaultHandler />).instance().getChildContext();
-    expect(context.ffFullName()).to.deep.equal([]);
+    expect(context.ffFullName()).toEqual([]);
   });
 });

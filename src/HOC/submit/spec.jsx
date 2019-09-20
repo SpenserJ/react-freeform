@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 
 import handler from '../handler';
 import submit from '.';
@@ -13,40 +11,40 @@ class Test extends React.Component { getDefaults() { return defaultValues; } }
 describe('HOC/submit', () => {
   it('extends class-based components', () => {
     const TestHandler = submit(handler(Test));
-    expect(TestHandler.displayName).to.equal('submit(handler(Test))');
-    expect(() => { submit(() => {}); }).to.throw('Cannot extend a functional component');
+    expect(TestHandler.displayName).toBe('submit(handler(Test))');
+    expect(() => { submit(() => {}); }).toThrow('Cannot extend a functional component');
   });
 
   it("doesn't crash if used before handler", () => {
     const TestHandler = handler(submit(Test));
-    expect(() => shallow(<TestHandler />).instance().getChildContext()).to.not.throw();
+    expect(() => shallow(<TestHandler />).instance().getChildContext()).not.toThrow();
   });
 
   it('supports isLoading() and canSubmit()', () => {
     const DefaultHandler = submit(handler(Test));
     const childContext = shallow(<DefaultHandler />).instance().getChildContext();
-    expect(childContext.ffCanSubmit()).to.equal(true);
-    expect(childContext.ffIsLoading()).to.equal(false);
+    expect(childContext.ffCanSubmit()).toBe(true);
+    expect(childContext.ffIsLoading()).toBe(false);
 
     const SubmitHandler = submit(handler(class extends Test {
       canSubmit() { return false; }
     }));
     const childContext2 = shallow(<SubmitHandler />).instance().getChildContext();
-    expect(childContext2.ffCanSubmit()).to.equal(false);
-    expect(childContext2.ffIsLoading()).to.equal(false);
+    expect(childContext2.ffCanSubmit()).toBe(false);
+    expect(childContext2.ffIsLoading()).toBe(false);
 
     const LoadingHandler = submit(handler(class extends Test {
       isLoading() { return true; }
     }));
     const childContext3 = shallow(<LoadingHandler />).instance().getChildContext();
-    expect(childContext3.ffCanSubmit()).to.equal(false);
-    expect(childContext3.ffIsLoading()).to.equal(true);
+    expect(childContext3.ffCanSubmit()).toBe(false);
+    expect(childContext3.ffIsLoading()).toBe(true);
   });
 
   it('adds onSubmit to the formProps()', () => {
     const FormPropsHandler = submit(handler(Test));
     const wrapper = shallow(<FormPropsHandler />);
-    expect(wrapper.find('form').props().onSubmit).to.equal(wrapper.instance().onSubmitBound);
+    expect(wrapper.find('form').props().onSubmit).toBe(wrapper.instance().onSubmitBound);
   });
 
   it('calls the super.onSubmit(values)', () => {
@@ -54,15 +52,15 @@ describe('HOC/submit', () => {
     class Submit extends Test {
       onSubmit(values) {
         callCount += 1;
-        expect(values).to.equal(defaultValues);
+        expect(values).toBe(defaultValues);
       }
     }
     const FormSubmit = submit(handler(Submit));
     const wrapper = shallow(<FormSubmit />);
-    const preventDefault = sinon.spy();
+    const preventDefault = jest.fn();
     wrapper.find('form').simulate('submit', { preventDefault });
-    expect(callCount).to.equal(1);
-    expect(preventDefault.calledOnce).to.equal(true);
+    expect(callCount).toBe(1);
+    expect(preventDefault).toHaveBeenCalledTimes(1);
   });
 
   it('retains childContext', () => {
@@ -71,8 +69,8 @@ describe('HOC/submit', () => {
 
       getChildContext() { return { test: true }; }
     }));
-    expect(FormContextHandler.childContextTypes.test).to.equal(PropTypes.bool.isRequired);
+    expect(FormContextHandler.childContextTypes.test).toBe(PropTypes.bool.isRequired);
     const wrapper = shallow(<FormContextHandler />);
-    expect(wrapper.instance().getChildContext().test).to.equal(true);
+    expect(wrapper.instance().getChildContext().test).toBe(true);
   });
 });

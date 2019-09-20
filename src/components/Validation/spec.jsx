@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 
 import Validation, { runValidationRules } from '.';
 
@@ -24,109 +23,112 @@ const context = {
 
 describe('components/runValidationRules', () => {
   test('should support a validation function', () => {
-    const rule = sinon.spy();
+    const rule = jest.fn();
     runValidationRules(rule, {}, noop);
-    expect(rule.calledOnce).toBe(true);
-    expect(rule.calledWith({}, noop)).toBe(true);
+    expect(rule).toHaveBeenCalledTimes(1);
+    expect(rule).toHaveBeenLastCalledWith({}, noop);
   });
 
   test('should support an array of validation functions', () => {
-    const rule1 = sinon.spy();
-    const rule2 = sinon.spy();
+    const rule1 = jest.fn();
+    const rule2 = jest.fn();
     runValidationRules([rule1, rule2], {}, noop);
-    expect(rule1.calledOnce).toBe(true);
-    expect(rule1.calledWith({}, noop)).toBe(true);
-    expect(rule2.calledOnce).toBe(true);
-    expect(rule2.calledWith({}, noop)).toBe(true);
+    expect(rule1).toHaveBeenCalledTimes(1);
+    expect(rule1).toHaveBeenLastCalledWith({}, noop);
+    expect(rule2).toHaveBeenCalledTimes(1);
+    expect(rule2).toHaveBeenLastCalledWith({}, noop);
   });
 
   test(
     'should support an object of validation functions, nesting the value by key',
     () => {
       const rules = {
-        a: sinon.spy(),
-        c: sinon.spy((_, invalidate) => invalidate('Test')),
+        a: jest.fn(),
+        c: jest.fn((_, invalidate) => invalidate('Test')),
       };
-      const invalidateSpy = sinon.spy(noop);
+      const invalidateSpy = jest.fn(noop);
 
       runValidationRules(rules, values, invalidateSpy);
-      expect(rules.a.calledOnce).toBe(true);
-      expect(rules.a.args[0][0]).toBe(values.a);
+      expect(rules.a).toHaveBeenCalledTimes(1);
+      expect(rules.a.mock.calls[0][0]).toBe(values.a);
 
-      expect(rules.c.calledOnce).toBe(true);
-      expect(rules.c.args[0][0]).toBe(values.c);
+      expect(rules.c).toHaveBeenCalledTimes(1);
+      expect(rules.c.mock.calls[0][0]).toBe(values.c);
 
-      expect(invalidateSpy.calledOnce).toBe(true);
-      expect(invalidateSpy.calledWith('Test', ['c'])).toBe(true);
+      expect(invalidateSpy).toHaveBeenCalledTimes(1);
+      expect(invalidateSpy).toHaveBeenLastCalledWith('Test', ['c']);
     },
   );
 
   test('should support arrays and objects nested in objects', () => {
     const rules = {
       c: [
-        sinon.spy((_, invalidate) => invalidate('Test')),
-        sinon.spy(),
+        jest.fn((_, invalidate) => invalidate('Test')),
+        jest.fn(),
       ],
       d: {
-        d1: sinon.spy((_, invalidate) => invalidate('Test')),
+        d1: jest.fn((_, invalidate) => invalidate('Test')),
       },
     };
-    const invalidateSpy = sinon.spy(noop);
+    const invalidateSpy = jest.fn(noop);
 
     runValidationRules(rules, values, invalidateSpy);
-    expect(rules.c[0].calledOnce).toBe(true);
-    expect(rules.c[0].args[0][0]).toBe(values.c);
-    expect(invalidateSpy.calledWith('Test', ['c'])).toBe(true);
+    expect(rules.c[0]).toHaveBeenCalledTimes(1);
+    expect(rules.c[0].mock.calls[0][0]).toBe(values.c);
+    expect(invalidateSpy).toHaveBeenCalledWith('Test', ['c']);
 
-    expect(rules.c[1].calledOnce).toBe(true);
-    expect(rules.c[1].args[0][0]).toBe(values.c);
+    expect(rules.c[1]).toHaveBeenCalledTimes(1);
+    expect(rules.c[1].mock.calls[0][0]).toBe(values.c);
 
-    expect(rules.d.d1.calledOnce).toBe(true);
-    expect(rules.d.d1.args[0][0]).toBe(values.d.d1);
-    expect(invalidateSpy.calledWith('Test', ['d', 'd1'])).toBe(true);
+    expect(rules.d.d1).toHaveBeenCalledTimes(1);
+    expect(rules.d.d1.mock.calls[0][0]).toBe(values.d.d1);
+    expect(invalidateSpy).toHaveBeenCalledWith('Test', ['d', 'd1']);
   });
 });
 
 describe('components/Validation', () => {
   test('should run validation when mounting', () => {
-    const ffUpdateValidation = sinon.spy();
-    const rule = sinon.spy((_, invalidate) => invalidate('test'));
+    const ffUpdateValidation = jest.fn();
+    const rule = jest.fn((_, invalidate) => invalidate('test'));
     shallow(<Validation rules={rule} />, { context: { ...context, ffUpdateValidation } });
-    expect(rule.calledOnce).toBe(true);
-    expect(ffUpdateValidation.calledOnce).toBe(true);
-    expect(ffUpdateValidation.calledWith([], [[[], 'test']])).toBe(true);
+    expect(rule).toHaveBeenCalledTimes(1);
+    expect(ffUpdateValidation).toHaveBeenCalledTimes(1);
+    expect(ffUpdateValidation).toHaveBeenLastCalledWith([], [[[], 'test']]);
   });
 
   test('should run validation after an update has been triggered', () => {
     let triggerUpdate;
     // Only invalidate on the second call
-    const rule = sinon.spy((_, invalidate) => (rule.calledTwice ? invalidate('test') : false));
+    const rule = jest.fn((_, invalidate) => (rule.mock.calls.length === 2
+      ? invalidate('test')
+      : false
+    ));
     const componentContext = {
       ...context,
-      ffUpdateValidation: sinon.spy(),
+      ffUpdateValidation: jest.fn(),
       formSubscription: {
         subscribe: (func) => { triggerUpdate = func; },
         unsubscribe: noop,
       },
     };
     shallow(<Validation rules={rule} />, { context: componentContext });
-    expect(rule.calledOnce).toBe(true);
-    expect(componentContext.ffUpdateValidation.calledOnce).toBe(false);
+    expect(rule).toHaveBeenCalledTimes(1);
+    expect(componentContext.ffUpdateValidation).not.toHaveBeenCalled();
 
     triggerUpdate();
-    expect(rule.calledTwice).toBe(true);
-    expect(componentContext.ffUpdateValidation.calledOnce).toBe(true);
-    expect(componentContext.ffUpdateValidation.calledWith([], [[[], 'test']])).toBe(true);
+    expect(rule).toHaveBeenCalledTimes(2);
+    expect(componentContext.ffUpdateValidation).toHaveBeenCalledTimes(1);
+    expect(componentContext.ffUpdateValidation).toHaveBeenLastCalledWith([], [[[], 'test']]);
   });
 
   test('should only send updates if validation results change', () => {
     let triggerUpdate;
     let error = false;
     // Only invalidate on the second call
-    const rule = sinon.spy((_, invalidate) => (error ? invalidate(error) : false));
+    const rule = jest.fn((_, invalidate) => (error ? invalidate(error) : false));
     const componentContext = {
       ...context,
-      ffUpdateValidation: sinon.spy(),
+      ffUpdateValidation: jest.fn(),
       formSubscription: {
         subscribe: (func) => { triggerUpdate = func; },
         unsubscribe: noop,
@@ -134,35 +136,35 @@ describe('components/Validation', () => {
     };
     // No errors on first render
     shallow(<Validation rules={rule} />, { context: componentContext });
-    expect(rule.calledOnce).toBe(true);
-    expect(componentContext.ffUpdateValidation.calledOnce).toBe(false);
+    expect(rule).toHaveBeenCalledTimes(1);
+    expect(componentContext.ffUpdateValidation).not.toHaveBeenCalled();
 
     // No errors on second render
     triggerUpdate();
-    expect(rule.calledTwice).toBe(true);
-    expect(componentContext.ffUpdateValidation.calledOnce).toBe(false);
+    expect(rule).toHaveBeenCalledTimes(2);
+    expect(componentContext.ffUpdateValidation).not.toHaveBeenCalled();
 
     // Errors on third render
     error = 'Error';
     triggerUpdate();
-    expect(rule.calledThrice).toBe(true);
-    expect(componentContext.ffUpdateValidation.calledOnce).toBe(true);
-    expect(componentContext.ffUpdateValidation.calledWith([], [[[], 'Error']])).toBe(true);
+    expect(rule).toHaveBeenCalledTimes(3);
+    expect(componentContext.ffUpdateValidation).toHaveBeenCalledTimes(1);
+    expect(componentContext.ffUpdateValidation).toHaveBeenLastCalledWith([], [[[], 'Error']]);
   });
 
   test('should remove validation when unmounting', () => {
-    const rule = sinon.spy((_, invalidate) => invalidate('test'));
-    const componentContext = { ...context, ffUpdateValidation: sinon.spy() };
+    const rule = jest.fn((_, invalidate) => invalidate('test'));
+    const componentContext = { ...context, ffUpdateValidation: jest.fn() };
     const wrapper = shallow(<Validation rules={rule} />, { context: componentContext });
-    expect(rule.calledOnce).toBe(true);
-    expect(componentContext.ffUpdateValidation.calledOnce).toBe(true);
-    expect(componentContext.ffUpdateValidation.calledWith([], [[[], 'test']])).toBe(true);
+    expect(rule).toHaveBeenCalledTimes(1);
+    expect(componentContext.ffUpdateValidation).toHaveBeenCalledTimes(1);
+    expect(componentContext.ffUpdateValidation).toHaveBeenLastCalledWith([], [[[], 'test']]);
 
     wrapper.unmount();
 
-    expect(rule.calledTwice).toBe(false);
-    expect(componentContext.ffUpdateValidation.calledTwice).toBe(true);
-    expect(componentContext.ffUpdateValidation.calledWith([[[], 'test']], [])).toBe(true);
+    expect(rule).not.toHaveBeenCalledTimes(2);
+    expect(componentContext.ffUpdateValidation).toHaveBeenCalledTimes(2);
+    expect(componentContext.ffUpdateValidation).toHaveBeenLastCalledWith([[[], 'test']], []);
   });
 
   test('should render a list of errors', () => {

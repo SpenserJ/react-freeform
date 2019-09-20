@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 
 import Subscriber, { Subscription } from '.';
 
@@ -10,11 +9,11 @@ describe('components/Subscriber: Subscription', () => {
     const mockSubscriber = {
       context: {
         formSubscription: {
-          subscribe: sinon.spy((callback) => {
+          subscribe: jest.fn((callback) => {
             expect(typeof callback).toBe('function');
             subscribedWith = callback;
           }),
-          unsubscribe: sinon.spy((callback) => {
+          unsubscribe: jest.fn((callback) => {
             expect(typeof callback).toBe('function');
             if (typeof subscribedWith !== 'undefined') {
               expect(callback).toBe(subscribedWith);
@@ -24,17 +23,17 @@ describe('components/Subscriber: Subscription', () => {
       },
     };
     const subscription = new Subscription(mockSubscriber, () => {});
-    expect(mockSubscriber.context.formSubscription.subscribe.notCalled).toBe(true);
-    expect(mockSubscriber.context.formSubscription.unsubscribe.notCalled).toBe(true);
+    expect(mockSubscriber.context.formSubscription.subscribe).not.toHaveBeenCalled();
+    expect(mockSubscriber.context.formSubscription.unsubscribe).not.toHaveBeenCalled();
     subscription.trySubscribe();
-    expect(mockSubscriber.context.formSubscription.subscribe.calledOnce).toBe(true);
-    expect(mockSubscriber.context.formSubscription.unsubscribe.calledOnce).toBe(true);
+    expect(mockSubscriber.context.formSubscription.subscribe).toHaveBeenCalledTimes(1);
+    expect(mockSubscriber.context.formSubscription.unsubscribe).toHaveBeenCalledTimes(1);
 
     // Confirm that we correctly tracked the subscription callback before we test unsubscribe
     expect(typeof subscribedWith).toBe('function');
 
     subscription.tryUnsubscribe();
-    expect(mockSubscriber.context.formSubscription.unsubscribe.calledTwice).toBe(true);
+    expect(mockSubscriber.context.formSubscription.unsubscribe).toHaveBeenCalledTimes(2);
   });
 });
 
@@ -42,16 +41,16 @@ describe('components/Subscriber: Subscriber', () => {
   test('(un)subscribes when the component (un)mounts', () => {
     const context = {
       formSubscription: {
-        subscribe: sinon.spy(() => {}),
-        unsubscribe: sinon.spy(() => {}),
+        subscribe: jest.fn(() => {}),
+        unsubscribe: jest.fn(() => {}),
       },
     };
     const wrapper = mount(<Subscriber />, { context });
-    expect(context.formSubscription.subscribe.calledOnce).toBe(true);
-    expect(context.formSubscription.unsubscribe.calledOnce).toBe(true);
+    expect(context.formSubscription.subscribe).toHaveBeenCalledTimes(1);
+    expect(context.formSubscription.unsubscribe).toHaveBeenCalledTimes(1);
     wrapper.unmount();
-    expect(context.formSubscription.subscribe.calledOnce).toBe(true);
-    expect(context.formSubscription.unsubscribe.calledTwice).toBe(true);
+    expect(context.formSubscription.subscribe).toHaveBeenCalledTimes(1);
+    expect(context.formSubscription.unsubscribe).toHaveBeenCalledTimes(2);
   });
 
   test('tries to trigger a render when subscription is updated', () => {
@@ -62,22 +61,19 @@ describe('components/Subscriber: Subscriber', () => {
         unsubscribe: () => {},
       },
     };
-    const setStateSpy = sinon.spy(Subscriber.prototype, 'setState');
-    const shouldComponentUpdateSpy = sinon.spy(Subscriber.prototype, 'shouldComponentUpdate');
+    const setStateSpy = jest.spyOn(Subscriber.prototype, 'setState');
+    const shouldComponentUpdateSpy = jest.spyOn(Subscriber.prototype, 'shouldComponentUpdate');
 
     const wrapper = mount(<Subscriber />, { context });
-    expect(setStateSpy.called).toBe(false);
-    expect(shouldComponentUpdateSpy.called).toBe(false);
+    expect(setStateSpy).not.toHaveBeenCalled();
+    expect(shouldComponentUpdateSpy).not.toHaveBeenCalled();
     update();
-    expect(setStateSpy.calledOnce).toBe(true);
-    expect(shouldComponentUpdateSpy.calledOnce).toBe(true);
-    expect(shouldComponentUpdateSpy.alwaysReturned(false)).toBe(true);
+    expect(setStateSpy).toHaveBeenCalledTimes(1);
+    expect(shouldComponentUpdateSpy).toHaveBeenCalledTimes(1);
+    expect(shouldComponentUpdateSpy).toHaveLastReturnedWith(false);
     wrapper.setProps({ a: true });
-    expect(setStateSpy.calledOnce).toBe(true);
-    expect(shouldComponentUpdateSpy.calledTwice).toBe(true);
-    expect(shouldComponentUpdateSpy.alwaysReturned(false)).toBe(false);
-
-    setStateSpy.restore();
-    shouldComponentUpdateSpy.restore();
+    expect(setStateSpy).toHaveBeenCalledTimes(1);
+    expect(shouldComponentUpdateSpy).toHaveBeenCalledTimes(2);
+    expect(shouldComponentUpdateSpy).toHaveLastReturnedWith(true);
   });
 });

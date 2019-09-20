@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 
 import ValueTransformer from '.';
 
@@ -31,7 +30,7 @@ describe('components/ValueTransformer', () => {
   });
 
   test('changes values from onChange', () => {
-    const onChange = sinon.spy();
+    const onChange = jest.fn();
     const wrapper = shallow((
       <ValueTransformer
         name="number"
@@ -43,11 +42,11 @@ describe('components/ValueTransformer', () => {
     });
     const component = wrapper.instance();
     component.getChildContext().ffOnChange({ target: { name: ['number'], value: 1 } });
-    expect(onChange.getCall(0).args[0].target.value).toBe(2);
+    expect(onChange.mock.calls[0][0].target.value).toBe(2);
   });
 
   test('allows the type to change in transformOnChange', () => {
-    const onChange = sinon.spy();
+    const onChange = jest.fn();
     const wrapper = shallow((
       <ValueTransformer
         name="json"
@@ -60,6 +59,6 @@ describe('components/ValueTransformer', () => {
     const component = wrapper.instance();
     component.getChildContext()
       .ffOnChange({ target: { name: ['json'], value: { nested: 'changed' } } });
-    expect(onChange.getCall(0).args[0].target.value).toBe(JSON.stringify({ nested: 'changed' }));
+    expect(onChange.mock.calls[0][0].target.value).toBe(JSON.stringify({ nested: 'changed' }));
   });
 });

@@ -1,13 +1,12 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 
 import Input from '.';
 
 const noop = () => {};
 describe('components/Input', () => {
   test('should render an input with basic props', () => {
-    const onChange = sinon.spy((e) => {
+    const onChange = jest.fn((e) => {
       expect(e.target.value).toBe('changed');
       expect(e.target.name).toBe('');
     });
@@ -16,7 +15,7 @@ describe('components/Input', () => {
     expect(input.length).toBe(1);
     expect(input.instance().value).toBe('test');
     input.simulate('change', { target: { name: '', value: 'changed' } });
-    expect(onChange.calledOnce).toBe(true);
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
   test('should pass additional props through', () => {
@@ -27,7 +26,7 @@ describe('components/Input', () => {
   });
 
   test('should render a checkbox', () => {
-    const onChange = sinon.spy((e) => {
+    const onChange = jest.fn((e) => {
       expect(e.target.value).toBe(false);
       expect(e.target.name).toBe('');
     });
@@ -37,11 +36,11 @@ describe('components/Input', () => {
     expect(input.instance().value).toBe('on');
     expect(input.instance().checked).toBe(true);
     input.simulate('change', { target: { name: '', checked: false } });
-    expect(onChange.calledOnce).toBe(true);
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
   test('should render a radio', () => {
-    const onChange = sinon.spy(value => expect(value).toBe('b'));
+    const onChange = jest.fn(value => expect(value).toBe('b'));
     const wrapper = mount(<Input name="test" value="a" data-value="a" onChange={onChange} data-name="radioName" type="radio" />);
     const input = wrapper.find('input');
     expect(input.length).toBe(1);
@@ -53,7 +52,7 @@ describe('components/Input', () => {
     // Emit an event with a name, and the onChange handler should just pass the
     // value on. Name is stripped intentionally
     input.simulate('change', { target: { name: 'radioName', value: 'b' } });
-    expect(onChange.calledOnce).toBe(true);
+    expect(onChange).toHaveBeenCalledTimes(1);
 
     // Try rendering a radio that isn't currently selected
     const wrapper2 = mount(<Input name="test" value="a" data-value="b" onChange={noop} data-name="radioName" type="radio" />);
