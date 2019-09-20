@@ -10,6 +10,7 @@ const values = {
   d: {
     d1: 'nested',
   },
+  e: "value",
 };
 
 const noop = () => {};
@@ -71,5 +72,14 @@ describe('components/Field', () => {
     input.simulate('change', { target: { name: '', value: false } });
     expect(ffOnChange).toHaveBeenCalledTimes(1);
     expect(ffOnChange.mock.calls[0][0].target).toEqual({ name: ['a'], value: false });
+  });
+
+  test('should render out children', () => {
+    const FakeComponent = ({ children }) => <div>{children}</div>;
+    const select = mount(
+      <Field name="e" component={FakeComponent}>test</Field>,
+      { context },
+    );
+    expect(select.text()).toBe('test');
   });
 });

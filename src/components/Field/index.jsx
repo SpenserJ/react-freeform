@@ -10,15 +10,7 @@ export default class Field extends ValueSubscriber {
     /**
      * What component to use for displaying the field itself
      */
-    component: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.func,
-    ]),
-    /**
-     * Children aren't used by Field, since it is rendering the `component` prop.
-     * @ignore
-     */
-    children: PropTypes.oneOf([null]),
+    component: PropTypes.elementType,
   };
 
   static defaultProps = {
