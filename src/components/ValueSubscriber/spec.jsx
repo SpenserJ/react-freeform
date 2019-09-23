@@ -156,4 +156,9 @@ describe('components/ValueSubscriber', () => {
     expect(() => changeType(5, '4')).not.toThrowError();
     expect(() => changeType(5, 'a')).toThrowError();
   });
+
+  test('allow values to be undefined with ignoreUndefined=true', () => {
+    expect(() => shallow(<ValueSubscriber name="e" />, { context })).toThrow();
+    expect(() => shallow(<ValueSubscriber name="e" ignoreUndefined />, { context })).not.toThrow();
+  });
 });

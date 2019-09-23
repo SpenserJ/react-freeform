@@ -15,11 +15,13 @@ export default class ValueSubscriber extends Subscriber {
       PropTypes.string,
       PropTypes.number,
     ]),
+    ignoreUndefined: PropTypes.bool,
   };
 
   static defaultProps = {
     ...Subscriber.defaultProps,
     name: '',
+    ignoreUndefined: false,
   };
 
   static contextTypes = {
@@ -98,11 +100,16 @@ export default class ValueSubscriber extends Subscriber {
   getValue() {
     const hasName = (typeof this.props.name !== 'undefined' && this.props.name !== '');
     const value = this.context.ffGetValue();
-    invariant(
-      typeof value !== 'undefined' && (!hasName || typeof value[this.props.name] !== 'undefined'),
-      `"${this.getName().join('.')}" must have a value. Please check the handler's getDefaults() method.`,
-    );
-    return hasName ? value[this.props.name] : value;
+    const namedValue = (hasName && typeof value !== 'undefined')
+      ? value[this.props.name]
+      : value;
+    if (!this.props.ignoreUndefined) {
+      invariant(
+        typeof namedValue !== 'undefined',
+        `"${this.getName().join('.')}" must have a value. Please check the handler's getDefaults() method.`,
+      );
+    }
+    return namedValue;
   }
 
   /**

@@ -61,7 +61,10 @@ export default (WrappedComponent) => {
     getValue = () => this.state.values;
 
     onChange = e => this.setState(
-      ({ values }) => ({ values: immutableObject.set(values, e.target.name, e.target.value) }),
+      ({ values }) => (typeof e.target.value === 'undefined'
+        ? { values: immutableObject.del(values, e.target.name) }
+        : { values: immutableObject.set(values, e.target.name, e.target.value) }
+      ),
       () => this.triggerUpdate(),
     );
 

@@ -28,6 +28,7 @@ export default class Field extends ValueSubscriber {
       name,
       component,
       onChange,
+      ignoreUndefined,
       ...otherProps
     } = this.props;
     return otherProps;

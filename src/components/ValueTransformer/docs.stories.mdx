@@ -89,3 +89,22 @@ a JSON string for submission.
     </ExampleForm>
   </Story>
 </Preview>
+
+### Conditionally removing values
+
+In some cases, you may only want to have a value in the top-level object in certain conditions, such as cleaning your data to remove empty values before submitting. This can be done by using the `ignoreUndefined` property that comes from [ValueSubscriber](/?path=/docs/components-valuesubscriber--default-story) and providing a default value in your `transformValue` prop. Since this will be creating a new value on every render, we recommend that you store an empty object/array variable outside so that the reference doesn't change.
+
+<Preview>
+  <Story name="conditional values">
+    <ExampleForm defaultValues={{}}>
+      <ValueTransformer
+        name="conditionalField"
+        ignoreUndefined
+        transformOnChange={value => (value ? value : undefined)}
+        transformValue={value => value || ''}
+      >
+        <Field />
+      </ValueTransformer>
+    </ExampleForm>
+  </Story>
+</Preview>
